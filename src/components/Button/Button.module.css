@@ -1,0 +1,47 @@
+.Button {
+  height: 40px;
+  border-width: 0;
+  background: #4545f5;
+  color: white;
+  border-radius: 5px;
+  border: 2px solid #4545f5;
+  -webkit-box-shadow: 1px 1px 0px 1px rgba(0, 0, 0, 0.05);
+          box-shadow: 1px 1px 0px 1px rgba(0, 0, 0, 0.05);
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  font-family: inherit;
+  -webkit-transition-property: background-color, -webkit-box-shadow;
+  transition-property: background-color, -webkit-box-shadow;
+  transition-property: background-color, box-shadow;
+  transition-property: background-color, box-shadow, -webkit-box-shadow;
+  -webkit-transition-duration: 150ms;
+          transition-duration: 150ms;
+  -webkit-transition-timing-function: ease-in-out;
+          transition-timing-function: ease-in-out;
+  padding: 0;
+}
+
+.Button:focus, .Button:hover {
+  cursor: pointer;
+  color: #4545f5;
+  background: white;
+  outline: none;
+}
+
+.Button:active {
+  background-color: #2e2ed8;
+  color: white;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  -webkit-transition-duration: 10ms;
+          transition-duration: 10ms;
+}
+
+.Text {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 24px;
+  font-size: 14px;
+  font-weight: bold;
+}
+/*# sourceMappingURL=Button.module.css.map */

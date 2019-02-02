@@ -1,0 +1,42 @@
+@import '../../styles/util';
+
+.Button {
+  height: 40px;
+  border-width: 0;
+  background: $blue;
+  color: white;
+  border-radius: 5px;
+  border: 2px solid $blue;
+  box-shadow: 1px 1px 0px 1px rgba(0, 0, 0, 0.05);
+  transition: 0.4s;
+  font-family: inherit;
+
+  transition-property: background-color, box-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: ease-in-out;
+  padding: 0;
+
+  &:focus,
+  &:hover {
+    // box-shadow: 1px 4px 5px 1px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    color: $blue;
+    background: white;
+    outline: none;
+  }
+
+  &:active {
+    background-color: $dark-blue;
+    color: white;
+    box-shadow: none;
+    transition-duration: 10ms;
+  }
+}
+
+.Text {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 24px;
+  font-size: 14px;
+  font-weight: bold;
+}

@@ -1,0 +1,29 @@
+.Container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 0 5%;
+  height: 50px;
+  background: #f5f6fa;
+  -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+          box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.Logo {
+  position: relative;
+}
+/*# sourceMappingURL=Navbar.module.css.map */
