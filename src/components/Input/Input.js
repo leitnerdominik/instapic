@@ -9,26 +9,26 @@ const input = props => {
     value,
     type,
     valid,
-    touched,
     control,
+    errorMessage,
     required,
     onChange,
     onBlur,
   } = props;
 
-  const inputClasses = [classes.Input];
+  const inputClasses = [classes.InputField];
 
   // checken ob funkt
-  if (!valid) {
-    inputClasses.push(classes.Invalid);
-  }
-  if (touched) {
-    inputClasses.push(classes.Touched);
+  let errorText = null;
+  if (errorMessage) {
+    inputClasses.push(classes.InvalidInput);
+    errorText = <span className={classes.ErrorText}>{errorMessage}</span>
   }
 
+
   return (
-    <div className={inputClasses.join(' ')}>
-      <label htmlFor={id}>{label}</label>
+    <div className={classes.Input}>
+      <label className={classes.InputText} htmlFor={id}>{label}</label>
       <input
         id={id}
         className={inputClasses.join(' ')}
@@ -38,6 +38,7 @@ const input = props => {
         onChange={event => onChange(id, event.target.value)}
         onBlur={() => onBlur(id)}
       />
+      {errorText}
     </div>
   );
 };

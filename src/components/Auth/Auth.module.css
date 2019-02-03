@@ -11,23 +11,9 @@
   -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04), 0 1px 5px rgba(0, 0, 0, 0.1);
           box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04), 0 1px 5px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 450px;
-  margin: 0 auto;
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 2rem;
   background: white;
-}
-
-.Auth form div {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  margin: 10px;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-}
-
-.Auth form div label, .Auth form div input {
-  display: block;
 }
 /*# sourceMappingURL=Auth.module.css.map */

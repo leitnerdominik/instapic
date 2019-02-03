@@ -4,7 +4,6 @@
   background: #4545f5;
   color: white;
   border-radius: 5px;
-  border: 2px solid #4545f5;
   -webkit-box-shadow: 1px 1px 0px 1px rgba(0, 0, 0, 0.05);
           box-shadow: 1px 1px 0px 1px rgba(0, 0, 0, 0.05);
   -webkit-transition: 0.4s;
@@ -23,8 +22,7 @@
 
 .Button:focus, .Button:hover {
   cursor: pointer;
-  color: #4545f5;
-  background: white;
+  background: #2e2ed8;
   outline: none;
 }
 
@@ -35,6 +33,12 @@
           box-shadow: none;
   -webkit-transition-duration: 10ms;
           transition-duration: 10ms;
+}
+
+.Button:disabled {
+  background: #dcdde1;
+  color: white;
+  cursor: not-allowed;
 }
 
 .Text {

@@ -1,10 +1,35 @@
-import validator from 'validator';
+import * as yup from 'yup';
 
-const isValid = (type, value) => {
+export const validationSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email()
+    .trim(),
+  name: yup
+    .string()
+    .min(5)
+    .trim(),
+  password: yup
+    .string()
+    .min(5)
+    .trim(),
+  passwordConfirm: yup
+    .string()
+    .min(5)
+    .trim(),
+});
 
-  if (type === "email") {
-    return validator.isEmail();
+export const isFormValid = form => {
+  let valueObj = {};
+  for (let inputKey in form) {
+    valueObj[inputKey] = form[inputKey].value;
   }
-}
-
-export default isValid;
+  validationSchema
+    .validateSync(valueObj)
+    .then(() => {
+      this.setState({ formIsValid: true });
+    })
+    .catch(err => {
+      this.setState({ formIsValid: false });
+    });
+};

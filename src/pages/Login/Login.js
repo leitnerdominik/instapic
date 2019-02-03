@@ -5,9 +5,11 @@ import Auth from '../../components/Auth/Auth';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 
+import validation from '../../util/is-valid';
+
 class Login extends Component {
   state = {
-    form: {
+    loginForm: {
       email: {
         label: 'E-Mail',
         value: '',
@@ -35,52 +37,67 @@ class Login extends Component {
   inputChangeHandler = (input, value) => {
     this.setState(prevState => {
       const updatedForm = {
-        ...prevState.form,
+        ...prevState.loginForm,
         [input]: {
-          ...prevState.form[input],
+          ...prevState.loginForm[input],
           value: value,
         },
       };
 
-      // TODO: ueberprufen ob Input gueltig ist
-
       return {
-        form: updatedForm,
+        loginForm: updatedForm,
       };
     });
   };
 
   inputBlurHandler = input => {
-    this.setState(prevState => {
-      const updatedForm = {
-        ...prevState.form,
-        [input]: {
-          ...prevState.form[input],
-          touched: true,
-        },
-      };
+    const value = this.state.loginForm[input].value;
 
-      return { form: updatedForm };
-    });
+    validation
+      .validate({ [input]: value })
+      .then(() => {
+        const updatedloginForm = {
+          ...this.state.loginForm,
+          [input]: {
+            ...this.state.loginForm[input],
+            valid: true,
+            errorMessage: '',
+          },
+        };
+        this.isFormValid();
+        this.setState({ loginForm: updatedloginForm });
+      })
+      .catch(err => {
+        const errorloginForm = {
+          ...this.state.loginForm,
+          [input]: {
+            ...this.state.loginForm[input],
+            valid: false,
+            errorMessage: err.message,
+          },
+        };
+        this.setState({ loginForm: errorloginForm });
+      });
   };
 
   render() {
-    const { form } = this.state;
+    const { loginForm } = this.state;
 
     let inputs = [];
 
-    for (let input in this.state.form) {
+    for (let input in loginForm) {
       inputs.push(
         <Input
-          label={form[input].label}
-          value={form[input].value}
-          key={form[input].id}
-          id={form[input].id}
-          type={form[input].type}
-          valid={form[input].valid}
-          touched={form[input].touched}
-          control={form[input].control}
-          required={form[input].required}
+          label={loginForm[input].label}
+          value={loginForm[input].value}
+          key={loginForm[input].id}
+          id={loginForm[input].id}
+          type={loginForm[input].type}
+          errorMessage={loginForm[input].errorMessage}
+          valid={loginForm[input].valid}
+          touched={loginForm[input].touched}
+          control={loginForm[input].control}
+          required={loginForm[input].required}
           onChange={this.inputChangeHandler}
           onBlur={this.inputBlurHandler}
         />
@@ -90,7 +107,10 @@ class Login extends Component {
     return (
       <Layout>
         <Auth>
-          <form>{inputs}<Button>Login</Button></form>
+          <form>
+            {inputs}
+            <Button disabled={!this.state.formIsValid}>Login</Button>
+          </form>
         </Auth>
       </Layout>
     );
