@@ -5,7 +5,7 @@ import Auth from '../../components/Auth/Auth';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 
-import validation from '../../util/is-valid';
+import { checkForm, validationSchema } from '../../util/is-valid';
 
 class Login extends Component {
   state = {
@@ -16,8 +16,7 @@ class Login extends Component {
         id: 'email',
         type: 'email',
         control: 'input',
-        valid: false,
-        touched: false,
+        error: '',
         required: true,
       },
       password: {
@@ -26,7 +25,7 @@ class Login extends Component {
         id: 'password',
         type: 'password',
         control: 'input',
-        valid: false,
+        error: '',
         touched: false,
         required: true,
       },
@@ -52,33 +51,81 @@ class Login extends Component {
 
   inputBlurHandler = input => {
     const value = this.state.loginForm[input].value;
-
-    validation
-      .validate({ [input]: value })
-      .then(() => {
-        const updatedloginForm = {
-          ...this.state.loginForm,
-          [input]: {
-            ...this.state.loginForm[input],
-            valid: true,
-            errorMessage: '',
-          },
-        };
-        this.isFormValid();
-        this.setState({ loginForm: updatedloginForm });
+    validationSchema
+      .validateAt('password', { password: 'kennwort'})
+      .then(valid => {
+        console.log(valid);
       })
       .catch(err => {
-        const errorloginForm = {
-          ...this.state.loginForm,
-          [input]: {
-            ...this.state.loginForm[input],
-            valid: false,
-            errorMessage: err.message,
-          },
-        };
-        this.setState({ loginForm: errorloginForm });
+        console.log(err);
+      });
+
+    // validationSchema.isValid({ [input]: value }).then(isFieldValid => {
+    //   console.log('isFieldValid: ', isFieldValid);
+    //   const updatedloginForm = {
+    //     ...this.state.loginForm,
+    //     [input]: {
+    //       ...this.state.loginForm[input],
+    //       valid: isFieldValid,
+    //     },
+    //   };
+    //   const isFormValid = this.checkForm(input, value);
+    //   isFormValid
+    //     .then(isValid => {
+    //       console.log(isValid);
+    //       this.setState({
+    //         loginForm: updatedloginForm,
+    //         formIsValid: isValid,
+    //       });
+    //     })
+    //     .catch(err => console.log(err));
+    // });
+  };
+
+  checkForm = (input, value) => {
+    const inputValue = {
+      input: value,
+    };
+    return validationSchema
+      .validate(inputValue)
+      .then(() => {
+        return true;
+      })
+      .catch(err => {
+        return false;
       });
   };
+
+  // checkForm = event => {
+  //   event.preventDefault();
+  //   const inputValues = {};
+  //   for (let inputKey in this.state.loginForm) {
+  //     inputValues[inputKey] = this.state.loginForm[inputKey].value;
+  //   }
+
+  //   console.log(inputValues);
+  //   validationSchema
+  //     .validate(inputValues)
+  //     .then(valid => {
+  //       console.log('success: ', valid);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //       this.setState(prevState => {
+  //         const updateForm = {
+  //           ...prevState.loginForm,
+  //           [err.path]: {
+  //             ...prevState.loginForm[err.path],
+  //             error: err.message,
+  //           },
+  //         };
+
+  //         return {
+  //           loginForm: updateForm
+  //         }
+  //       });
+  //     });
+  // };
 
   render() {
     const { loginForm } = this.state;
@@ -93,9 +140,7 @@ class Login extends Component {
           key={loginForm[input].id}
           id={loginForm[input].id}
           type={loginForm[input].type}
-          errorMessage={loginForm[input].errorMessage}
-          valid={loginForm[input].valid}
-          touched={loginForm[input].touched}
+          errorMessage={loginForm[input].error}
           control={loginForm[input].control}
           required={loginForm[input].required}
           onChange={this.inputChangeHandler}
@@ -109,7 +154,7 @@ class Login extends Component {
         <Auth>
           <form>
             {inputs}
-            <Button disabled={!this.state.formIsValid}>Login</Button>
+            <Button onClick={this.checkForm}>Login</Button>
           </form>
         </Auth>
       </Layout>

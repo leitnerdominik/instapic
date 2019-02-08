@@ -5,7 +5,7 @@ import Auth from '../../components/Auth/Auth';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 
-import validation from '../../util/is-valid';
+import { checkForm, validationSchema } from '../../util/is-valid';
 
 class SignUp extends Component {
   state = {
@@ -73,7 +73,7 @@ class SignUp extends Component {
   inputBlurHandler = input => {
     const value = this.state.signupform[input].value;
 
-    validation
+    validationSchema
       .validate({ [input]: value })
       .then(() => {
         const updatedSignUpForm = {
@@ -105,7 +105,7 @@ class SignUp extends Component {
     for (let inputKey in this.state.signupform) {
       valueObj[inputKey] = this.state.signupform[inputKey].value;
     }
-    validation
+    validationSchema
       .validate(valueObj)
       .then(() => {
         this.setState({ formIsValid: true });

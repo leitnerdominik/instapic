@@ -4,7 +4,8 @@ export const validationSchema = yup.object().shape({
   email: yup
     .string()
     .email()
-    .trim(),
+    .trim()
+    .required(),
   name: yup
     .string()
     .min(5)
@@ -12,24 +13,12 @@ export const validationSchema = yup.object().shape({
   password: yup
     .string()
     .min(5)
-    .trim(),
+    .trim()
+    .required(),
   passwordConfirm: yup
     .string()
     .min(5)
     .trim(),
 });
 
-export const isFormValid = form => {
-  let valueObj = {};
-  for (let inputKey in form) {
-    valueObj[inputKey] = form[inputKey].value;
-  }
-  validationSchema
-    .validateSync(valueObj)
-    .then(() => {
-      this.setState({ formIsValid: true });
-    })
-    .catch(err => {
-      this.setState({ formIsValid: false });
-    });
-};
+
