@@ -7,13 +7,14 @@ import {
   faSignInAlt,
   faUserPlus,
   faUser,
+  faExclamationTriangle
 } from '@fortawesome/free-solid-svg-icons';
 
 import Instapic from './pages/Instapic/Instapic';
 import Login from './pages/Login/Login';
 import SignUp from './pages/SignUp/SignUp';
 
-library.add(faIgloo, faSignInAlt, faUserPlus, faUser);
+library.add(faIgloo, faSignInAlt, faUserPlus, faUser, faExclamationTriangle);
 
 class App extends Component {
   render() {
