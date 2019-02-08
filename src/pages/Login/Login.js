@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import Layout from '../../components/Layout/Layout';
 import Auth from '../../components/Auth/Auth';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 
-import { checkForm, validationSchema } from '../../util/is-valid';
+import { validationSchema } from '../../util/is-valid';
+
+import classes from './Login.module.css';
 
 class Login extends Component {
   state = {
@@ -16,6 +20,7 @@ class Login extends Component {
         id: 'email',
         type: 'email',
         control: 'input',
+        valid: false,
         error: '',
         required: true,
       },
@@ -25,12 +30,13 @@ class Login extends Component {
         id: 'password',
         type: 'password',
         control: 'input',
+        valid: false,
         error: '',
         touched: false,
         required: true,
       },
     },
-    formIsValid: false,
+    formIsValid: null,
   };
 
   inputChangeHandler = (input, value) => {
@@ -52,83 +58,48 @@ class Login extends Component {
   inputBlurHandler = input => {
     const value = this.state.loginForm[input].value;
     validationSchema
-      .validateAt('password', { password: 'kennwort'})
+      .validateAt(input, { [input]: value })
       .then(valid => {
-        console.log(valid);
+        const updatedLoginForm = {
+          ...this.state.loginForm,
+          [input]: {
+            ...this.state.loginForm[input],
+            valid: true,
+            error: '',
+          },
+        };
+
+        this.setState({ loginForm: updatedLoginForm });
       })
       .catch(err => {
-        console.log(err);
-      });
+        const errorLoginForm = {
+          ...this.state.loginForm,
+          [input]: {
+            ...this.state.loginForm[input],
+            valid: false,
+            error: err.message,
+          },
+        };
 
-    // validationSchema.isValid({ [input]: value }).then(isFieldValid => {
-    //   console.log('isFieldValid: ', isFieldValid);
-    //   const updatedloginForm = {
-    //     ...this.state.loginForm,
-    //     [input]: {
-    //       ...this.state.loginForm[input],
-    //       valid: isFieldValid,
-    //     },
-    //   };
-    //   const isFormValid = this.checkForm(input, value);
-    //   isFormValid
-    //     .then(isValid => {
-    //       console.log(isValid);
-    //       this.setState({
-    //         loginForm: updatedloginForm,
-    //         formIsValid: isValid,
-    //       });
-    //     })
-    //     .catch(err => console.log(err));
-    // });
-  };
-
-  checkForm = (input, value) => {
-    const inputValue = {
-      input: value,
-    };
-    return validationSchema
-      .validate(inputValue)
-      .then(() => {
-        return true;
-      })
-      .catch(err => {
-        return false;
+        this.setState({ loginForm: errorLoginForm });
       });
   };
 
-  // checkForm = event => {
-  //   event.preventDefault();
-  //   const inputValues = {};
-  //   for (let inputKey in this.state.loginForm) {
-  //     inputValues[inputKey] = this.state.loginForm[inputKey].value;
-  //   }
+  checkForm = event => {
+    event.preventDefault();
+    const inputValues = {};
+    for (let inputKey in this.state.loginForm) {
+      inputValues[inputKey] = this.state.loginForm[inputKey].value;
+    }
 
-  //   console.log(inputValues);
-  //   validationSchema
-  //     .validate(inputValues)
-  //     .then(valid => {
-  //       console.log('success: ', valid);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //       this.setState(prevState => {
-  //         const updateForm = {
-  //           ...prevState.loginForm,
-  //           [err.path]: {
-  //             ...prevState.loginForm[err.path],
-  //             error: err.message,
-  //           },
-  //         };
-
-  //         return {
-  //           loginForm: updateForm
-  //         }
-  //       });
-  //     });
-  // };
+    console.log('InputvaluesObj: ', inputValues);
+    validationSchema.isValid(inputValues).then(validity => {
+      this.setState({ formIsValid: validity });
+    });
+  };
 
   render() {
-    const { loginForm } = this.state;
+    const { loginForm, formIsValid } = this.state;
 
     let inputs = [];
 
@@ -140,6 +111,7 @@ class Login extends Component {
           key={loginForm[input].id}
           id={loginForm[input].id}
           type={loginForm[input].type}
+          valid={loginForm[input].valid}
           errorMessage={loginForm[input].error}
           control={loginForm[input].control}
           required={loginForm[input].required}
@@ -149,10 +121,21 @@ class Login extends Component {
       );
     }
 
+    let wrongForm = null;
+    if (formIsValid === false) {
+      wrongForm = (
+        <div className={classes.WrongForm}>
+          <FontAwesomeIcon icon="exclamation-triangle" />
+          <span>Verification failed. Please try again.</span>
+        </div>
+      );
+    }
+
     return (
       <Layout>
         <Auth>
-          <form>
+          <form className={classes.Form}>
+            {wrongForm}
             {inputs}
             <Button onClick={this.checkForm}>Login</Button>
           </form>
