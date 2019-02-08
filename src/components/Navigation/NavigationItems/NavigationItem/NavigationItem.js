@@ -6,9 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const navigationItem = ({ link, text, icon }) => {
   return (
     <li>
-      <FontAwesomeIcon icon={icon} />
       <NavLink to={link} exact>
-        {text}
+        <FontAwesomeIcon icon={icon} />
+        <span>{text}</span>
       </NavLink>
     </li>
   );

@@ -14,20 +14,15 @@
   transition-duration: 150ms;
   transition-timing-function: ease-in-out;
   padding: 0;
+  cursor: pointer;
 
-  &:focus,
-  &:hover {
-    // box-shadow: 1px 4px 5px 1px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    background: $dark-blue;
+  &:focus {
     outline: none;
   }
-
-  &:active {
-    background-color: $dark-blue;
-    color: white;
-    box-shadow: none;
-    transition-duration: 10ms;
+  &:active,
+  &:hover {
+    background: $dark-blue;
+    transition: .7s;
   }
 
   &:disabled {

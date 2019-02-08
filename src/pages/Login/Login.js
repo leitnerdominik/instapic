@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import Layout from '../../components/Layout/Layout';
 import Auth from '../../components/Auth/Auth';
 import Input from '../../components/Input/Input';
@@ -125,7 +123,6 @@ class Login extends Component {
     if (formIsValid === false) {
       wrongForm = (
         <div className={classes.WrongForm}>
-          <FontAwesomeIcon icon="exclamation-triangle" />
           <span>Verification failed. Please try again.</span>
         </div>
       );

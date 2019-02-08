@@ -12,6 +12,9 @@
 .NavItems li a {
   text-decoration: none;
   color: #000000;
+}
+
+.NavItems li a span {
   margin: 0 5px;
 }
 /*# sourceMappingURL=NavigationItems.module.css.map */

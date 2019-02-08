@@ -1,0 +1,10 @@
+{
+    "version": 3,
+    "mappings": "AAEA,AAAA,UAAU,CAAC;EACT,UAAU,ECEN,OAAO;EDDX,KAAK,EAAE,IAAI;EACX,OAAO,EAAE,SAAS;EAClB,MAAM,EAAE,UAAU;CAKnB;;AATD,AAME,UANQ,CAMR,IAAI,CAAC;EACH,OAAO,EAAE,MAAM;CAChB",
+    "sources": [
+        "Error.module.scss",
+        "../../styles/_util.scss"
+    ],
+    "names": [],
+    "file": "Error.module.css"
+}

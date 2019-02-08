@@ -18,21 +18,17 @@
   -webkit-transition-timing-function: ease-in-out;
           transition-timing-function: ease-in-out;
   padding: 0;
+  cursor: pointer;
 }
 
-.Button:focus, .Button:hover {
-  cursor: pointer;
-  background: #2e2ed8;
+.Button:focus {
   outline: none;
 }
 
-.Button:active {
-  background-color: #2e2ed8;
-  color: white;
-  -webkit-box-shadow: none;
-          box-shadow: none;
-  -webkit-transition-duration: 10ms;
-          transition-duration: 10ms;
+.Button:active, .Button:hover {
+  background: #0101aa;
+  -webkit-transition: .7s;
+  transition: .7s;
 }
 
 .Button:disabled {

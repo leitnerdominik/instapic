@@ -5,7 +5,7 @@ import Auth from '../../components/Auth/Auth';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 
-import { checkForm, validationSchema } from '../../util/is-valid';
+import { validationSchema } from '../../util/is-valid';
 
 class SignUp extends Component {
   state = {
@@ -17,8 +17,8 @@ class SignUp extends Component {
         type: 'email',
         control: 'input',
         valid: false,
+        error: '',
         required: true,
-        errorMessage: '',
       },
       name: {
         label: 'Name',
@@ -27,8 +27,8 @@ class SignUp extends Component {
         type: 'text',
         control: 'input',
         valid: false,
+        error: '',
         required: true,
-        errorMessage: '',
       },
       password: {
         label: 'Password',
@@ -37,8 +37,8 @@ class SignUp extends Component {
         type: 'password',
         control: 'input',
         valid: false,
+        error: '',
         required: true,
-        errorMessage: '',
       },
       passwordConfirm: {
         label: 'Confirm Password',
@@ -47,8 +47,8 @@ class SignUp extends Component {
         type: 'password',
         control: 'input',
         valid: false,
+        error: '',
         required: true,
-        errorMessage: '',
       },
     },
     formIsValid: false,
@@ -74,14 +74,14 @@ class SignUp extends Component {
     const value = this.state.signupform[input].value;
 
     validationSchema
-      .validate({ [input]: value })
+      .validateAt(input, { [input]: value })
       .then(() => {
         const updatedSignUpForm = {
           ...this.state.signupform,
           [input]: {
             ...this.state.signupform[input],
             valid: true,
-            errorMessage: '',
+            error: '',
           },
         };
         this.isFormValid();
@@ -93,7 +93,7 @@ class SignUp extends Component {
           [input]: {
             ...this.state.signupform[input],
             valid: false,
-            errorMessage: err.message,
+            error: err.message,
           },
         };
         this.setState({ signupform: errorSignUpForm });
@@ -126,7 +126,7 @@ class SignUp extends Component {
           key={signupform[input].id}
           id={signupform[input].id}
           type={signupform[input].type}
-          errorMessage={signupform[input].errorMessage}
+          errorMessage={signupform[input].error}
           valid={signupform[input].valid}
           touched={signupform[input].touched}
           control={signupform[input].control}

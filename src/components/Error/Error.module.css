@@ -1,0 +1,11 @@
+.WrongForm {
+  background: #c0392b;
+  color: #fff;
+  padding: 15px 30px;
+  margin: 0 0 20px 0;
+}
+
+.WrongForm span {
+  padding: 0 10px;
+}
+/*# sourceMappingURL=Error.module.css.map */
