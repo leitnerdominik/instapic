@@ -8,6 +8,7 @@ const input = props => {
     label,
     value,
     type,
+    valid,
     errorMessage,
     control,
     required,
@@ -19,9 +20,11 @@ const input = props => {
 
   // checken ob funkt
   let errorText = null;
-  if (errorMessage.length > 0) {
+  if (errorMessage.length > 0 && !valid) {
     inputClasses.push(classes.InvalidInput);
     errorText = <span className={classes.ErrorText}>{errorMessage}</span>
+  } else if(valid) {
+    inputClasses.push(classes.ValidInput);
   }
 
 
