@@ -1,0 +1,68 @@
+@import '../../styles/util';
+
+.Button {
+  height: 40px;
+  border-width: 0;
+  background: $blue;
+  color: white;
+  border-radius: 5px;
+  box-shadow: 1px 1px 0px 1px rgba(0, 0, 0, 0.05);
+  transition: 0.4s;
+  font-family: inherit;
+
+  transition-property: background-color, box-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: ease-in-out;
+  padding: 0;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+  &:active,
+  &:hover {
+    background: $dark-blue;
+    transition: .7s;
+  }
+
+  &:disabled {
+    background: $grey;
+    color: white;
+    cursor: not-allowed;
+  }
+}
+
+.Text {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 24px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.Submit {
+  background: $green;
+
+  &:hover, &:active {
+    background: $dark-green;
+  }
+}
+
+.Cancel {
+  background: $red;
+
+  &:hover, &:active {
+    background: $dark-red;
+  }
+}
+
+.Transparent {
+  background: transparent;
+  color: #000;
+  box-shadow: none;
+
+  &:hover, &:active {
+    background: transparent;
+  }
+  
+}

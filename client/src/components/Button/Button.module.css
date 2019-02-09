@@ -1,0 +1,74 @@
+.Button {
+  height: 40px;
+  border-width: 0;
+  background: #4545f5;
+  color: white;
+  border-radius: 5px;
+  -webkit-box-shadow: 1px 1px 0px 1px rgba(0, 0, 0, 0.05);
+          box-shadow: 1px 1px 0px 1px rgba(0, 0, 0, 0.05);
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  font-family: inherit;
+  -webkit-transition-property: background-color, -webkit-box-shadow;
+  transition-property: background-color, -webkit-box-shadow;
+  transition-property: background-color, box-shadow;
+  transition-property: background-color, box-shadow, -webkit-box-shadow;
+  -webkit-transition-duration: 150ms;
+          transition-duration: 150ms;
+  -webkit-transition-timing-function: ease-in-out;
+          transition-timing-function: ease-in-out;
+  padding: 0;
+  cursor: pointer;
+}
+
+.Button:focus {
+  outline: none;
+}
+
+.Button:active, .Button:hover {
+  background: #0101aa;
+  -webkit-transition: .7s;
+  transition: .7s;
+}
+
+.Button:disabled {
+  background: #dcdde1;
+  color: white;
+  cursor: not-allowed;
+}
+
+.Text {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 24px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.Submit {
+  background: #44bd32;
+}
+
+.Submit:hover, .Submit:active {
+  background: #2da32d;
+}
+
+.Cancel {
+  background: #c0392b;
+}
+
+.Cancel:hover, .Cancel:active {
+  background: #a0190a;
+}
+
+.Transparent {
+  background: transparent;
+  color: #000;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.Transparent:hover, .Transparent:active {
+  background: transparent;
+}
+/*# sourceMappingURL=Button.module.css.map */
