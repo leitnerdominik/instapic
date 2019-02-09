@@ -1,0 +1,11 @@
+.Modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 16px;
+  z-index: 200;
+}
+/*# sourceMappingURL=Modal.module.css.map */
