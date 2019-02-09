@@ -4,6 +4,7 @@ import Layout from '../../components/Layout/Layout';
 import Auth from '../../components/Auth/Auth';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
+import Error from '../../components/Error/Error';
 
 import { validationSchema } from '../../util/is-valid';
 

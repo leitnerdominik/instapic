@@ -84,7 +84,6 @@ class SignUp extends Component {
             error: '',
           },
         };
-        this.isFormValid();
         this.setState({ signupform: updatedSignUpForm });
       })
       .catch(err => {
@@ -100,19 +99,16 @@ class SignUp extends Component {
       });
   };
 
-  isFormValid = () => {
-    let valueObj = {};
+  checkForm = event => {
+    event.preventDefault();
+    const inputValues = {};
     for (let inputKey in this.state.signupform) {
-      valueObj[inputKey] = this.state.signupform[inputKey].value;
+      inputValues[inputKey] = this.state.signupform[inputKey].value;
     }
-    validationSchema
-      .validate(valueObj)
-      .then(() => {
-        this.setState({ formIsValid: true });
-      })
-      .catch(err => {
-        this.setState({ formIsValid: false})
-      });
+
+    validationSchema.isValid(inputValues).then(validity => {
+      this.setState({ formIsValid: validity });
+    });
   };
 
   render() {
