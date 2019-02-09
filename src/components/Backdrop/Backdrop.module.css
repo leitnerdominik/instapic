@@ -1,0 +1,13 @@
+.Backdrop {
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  position: fixed;
+  top: 0;
+  left: 0;
+  -webkit-transition: opacity 0.3 ease-out;
+  transition: opacity 0.3 ease-out;
+  opacity: 1;
+}
+/*# sourceMappingURL=Backdrop.module.css.map */
