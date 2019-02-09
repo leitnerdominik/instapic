@@ -4,6 +4,8 @@ import Layout from '../../components/Layout/Layout';
 import Auth from '../../components/Auth/Auth';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
+import Error from '../../components/Error/Error';
+import Form from '../../components/Form/Form';
 
 import { validationSchema } from '../../util/is-valid';
 
@@ -18,7 +20,6 @@ class SignUp extends Component {
         control: 'input',
         valid: false,
         error: '',
-        required: true,
       },
       name: {
         label: 'Name',
@@ -28,7 +29,6 @@ class SignUp extends Component {
         control: 'input',
         valid: false,
         error: '',
-        required: true,
       },
       password: {
         label: 'Password',
@@ -38,7 +38,6 @@ class SignUp extends Component {
         control: 'input',
         valid: false,
         error: '',
-        required: true,
       },
       passwordConfirm: {
         label: 'Confirm Password',
@@ -48,10 +47,9 @@ class SignUp extends Component {
         control: 'input',
         valid: false,
         error: '',
-        required: true,
       },
     },
-    formIsValid: false,
+    formIsValid: null,
   };
 
   inputChangeHandler = (input, value) => {
@@ -112,7 +110,7 @@ class SignUp extends Component {
   };
 
   render() {
-    const { signupform } = this.state;
+    const { signupform, formIsValid } = this.state;
     let inputs = [];
     for (let input in signupform) {
       inputs.push(
@@ -126,19 +124,25 @@ class SignUp extends Component {
           valid={signupform[input].valid}
           touched={signupform[input].touched}
           control={signupform[input].control}
-          required={signupform[input].required}
           onChange={this.inputChangeHandler}
           onBlur={this.inputBlurHandler}
         />
       );
     }
+
+    let wrongForm = null;
+    if (formIsValid === false) {
+      wrongForm = <Error />;
+    }
+
     return (
       <Layout>
         <Auth>
-          <form>
+          <Form>
+            {wrongForm}
             {inputs}
-            <Button disabled={!this.state.formIsValid}>Sign Up</Button>
-          </form>
+            <Button onClick={this.checkForm}>Sign Up</Button>
+          </Form>
         </Auth>
       </Layout>
     );

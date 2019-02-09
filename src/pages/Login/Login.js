@@ -5,10 +5,9 @@ import Auth from '../../components/Auth/Auth';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import Error from '../../components/Error/Error';
+import Form from '../../components/Form/Form';
 
 import { validationSchema } from '../../util/is-valid';
-
-import classes from './Login.module.css';
 
 class Login extends Component {
   state = {
@@ -21,7 +20,6 @@ class Login extends Component {
         control: 'input',
         valid: false,
         error: '',
-        required: true,
       },
       password: {
         label: 'Password',
@@ -31,8 +29,6 @@ class Login extends Component {
         control: 'input',
         valid: false,
         error: '',
-        touched: false,
-        required: true,
       },
     },
     formIsValid: null,
@@ -113,7 +109,6 @@ class Login extends Component {
           valid={loginForm[input].valid}
           errorMessage={loginForm[input].error}
           control={loginForm[input].control}
-          required={loginForm[input].required}
           onChange={this.inputChangeHandler}
           onBlur={this.inputBlurHandler}
         />
@@ -122,21 +117,17 @@ class Login extends Component {
 
     let wrongForm = null;
     if (formIsValid === false) {
-      wrongForm = (
-        <div className={classes.WrongForm}>
-          <span>Verification failed. Please try again.</span>
-        </div>
-      );
+      wrongForm = <Error />;
     }
 
     return (
       <Layout>
         <Auth>
-          <form className={classes.Form}>
+          <Form>
             {wrongForm}
             {inputs}
             <Button onClick={this.checkForm}>Login</Button>
-          </form>
+          </Form>
         </Auth>
       </Layout>
     );
