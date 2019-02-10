@@ -2,13 +2,13 @@ import React from 'react';
 
 import classes from './Button.module.css';
 
-const button = ({ children, type, disabled, onClick }) => {
+const button = ({ children, design, type, disabled, onClick }) => {
   const buttonClasses = [classes.Button];
-  if (type === 'submit') {
+  if (design === 'submit') {
     buttonClasses.push(classes.Submit);
-  } else if (type === 'cancel') {
+  } else if (design === 'cancel') {
     buttonClasses.push(classes.Cancel);
-  } else if (type === 'transparent') {
+  } else if (design === 'transparent') {
     buttonClasses.push(classes.Transparent);
   }
 
@@ -17,6 +17,7 @@ const button = ({ children, type, disabled, onClick }) => {
       disabled={disabled}
       onClick={onClick}
       className={buttonClasses.join(' ')}
+      type={type}
     >
       <span className={classes.Text}>{children}</span>
     </button>

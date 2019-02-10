@@ -123,10 +123,10 @@ class Login extends Component {
     return (
       <Layout>
         <Auth>
-          <Form>
+          <Form onSubmit={this.checkForm}>
             {wrongForm}
             {inputs}
-            <Button onClick={this.checkForm}>Login</Button>
+            <Button type="submit">Login</Button>
           </Form>
         </Auth>
       </Layout>

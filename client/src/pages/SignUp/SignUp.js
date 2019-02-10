@@ -135,13 +135,20 @@ class SignUp extends Component {
       wrongForm = <Error />;
     }
 
+    const prepData = {
+      email: signupform.email.value,
+      name: signupform.name.value,
+      password: signupform.password.value,
+      passwordConfirm: signupform.passwordConfirm.value,
+    };
+
     return (
       <Layout>
         <Auth>
-          <Form>
+          <Form onSubmit={event => this.props.onSignUp(event, prepData)}>
             {wrongForm}
             {inputs}
-            <Button onClick={this.checkForm}>Sign Up</Button>
+            <Button type="submit">Sign Up</Button>
           </Form>
         </Auth>
       </Layout>

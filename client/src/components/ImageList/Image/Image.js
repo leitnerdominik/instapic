@@ -15,12 +15,12 @@ const image = ({ path, alt, title, description }) => {
       </div>
       <p>{description}</p>
       <div className={classes.ButtonContainer}>
-        <Button type='transparent'>
+        <Button design='transparent'>
           <FontAwesomeIcon style={{
             color: 'red'
           }} icon='heart' size="2x" />
         </Button>
-        <Button type="cancel">Delete</Button>
+        <Button design="cancel">Delete</Button>
         <Button>Edit</Button>
       </div>
     </div>

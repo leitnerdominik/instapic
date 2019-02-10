@@ -71,8 +71,12 @@ class PostImage extends Component {
         <Form>
           {inputs}
           <div className={classes.ButtonContainer}>
-            <Button type='cancel' onClick={close}>Cancel</Button>
-            <Button type='submit'>Save</Button>
+            <Button design="cancel" onClick={close}>
+              Cancel
+            </Button>
+            <Button design="submit" type="submit">
+              Save
+            </Button>
           </div>
         </Form>
       </Modal>
