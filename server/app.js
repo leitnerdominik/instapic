@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 
 const postRoutes = require('./routes/post');
+const authRoutes = require('./routes/auth');
 
 const MONGODB_URI =
   'mongodb+srv://dominik:TbUzGgf4LLRi06IE@cluster0-dzuqr.mongodb.net/instapic';
@@ -50,6 +51,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/post', postRoutes);
+app.use('/auth', authRoutes);
 
 app.use((error, req, res, next) => {
   const status = error.statusCode || 500;
