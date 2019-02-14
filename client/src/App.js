@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
@@ -52,6 +52,10 @@ class App extends Component {
         if (response.status === 422) {
           throw new Error('Validation failed! Is the email already used?');
         }
+        if (response.status === 401) {
+          throw new Error('Passwords dont match!');
+        }
+
         if (response.status !== 200 && response.status !== 201) {
           throw new Error('Signup failed!');
         }
@@ -59,7 +63,7 @@ class App extends Component {
         return response.json();
       })
       .then(jsonData => {
-        console.log(jsonData);
+        console.log('Props: ', this.props);
         this.setState({ isAuth: false, authLoading: false });
         this.props.history.replace('/');
       })
@@ -143,8 +147,10 @@ class App extends Component {
           exact
           render={props => (
             <SignUp
+              {...props}
               onSignUp={this.signupHandler}
               loading={this.state.authLoading}
+              error={this.state.error}
             />
           )}
         />
@@ -153,4 +159,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);

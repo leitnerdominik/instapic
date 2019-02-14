@@ -111,6 +111,7 @@ class SignUp extends Component {
 
   render() {
     const { signupform, formIsValid } = this.state;
+
     let inputs = [];
     for (let input in signupform) {
       inputs.push(
@@ -131,8 +132,11 @@ class SignUp extends Component {
     }
 
     let wrongForm = null;
-    if (formIsValid === false) {
-      wrongForm = <Error />;
+
+    if (this.props.error) {
+      wrongForm = <Error>{this.props.error.message}</Error>;
+    } else if (formIsValid === false) {
+      wrongForm = <Error>Verification failed. Please try again.</Error>;
     }
 
     const prepData = {
