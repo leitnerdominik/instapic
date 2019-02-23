@@ -22,7 +22,7 @@ const authFailed = error => {
   };
 };
 
-const logout = () => {
+export const logout = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('userId');
   localStorage.removeItem('expiryDate');

@@ -15,6 +15,7 @@ import {
 import Instapic from './pages/Instapic/Instapic';
 import Login from './pages/Login/Login';
 import SignUp from './pages/SignUp/SignUp';
+import Logout from './pages/Logout/Logout';
 import * as action from './store/actions/index';
 
 library.add(
@@ -176,7 +177,7 @@ class App extends Component {
             />
           )}
         />
-        <Route path="/logout" exact />
+        <Route path="/logout" exact component={Logout} />
       </Switch>
     );
   }
