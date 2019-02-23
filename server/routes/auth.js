@@ -24,10 +24,10 @@ router.put(
       .normalizeEmail(),
     body('password')
       .trim()
-      .isLength({ min: 8 }),
+      .isLength({ min: 5 }),
     body('name')
       .trim()
-      .isLength({ min: 8 }),
+      .isLength({ min: 5 }),
   ],
   authController.signup
 );

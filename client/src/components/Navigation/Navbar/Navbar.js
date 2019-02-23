@@ -6,13 +6,54 @@ import Logo from '../../Logo/Logo';
 
 import classes from './Navbar.module.css';
 
-const navbar = () => {
+const items = [
+  {
+    id: 'login',
+    text: 'Login',
+    link: '/login',
+    icon: 'sign-in-alt',
+    auth: false,
+  },
+  {
+    id: 'signup',
+    text: 'Sign Up',
+    link: '/signup',
+    icon: 'user-plus',
+    auth: false,
+  },
+  {
+    id: 'logout',
+    text: 'logout',
+    link: '/logout',
+    icon: 'user-plus',
+    auth: true,
+  },
+  {
+    id: 'profile',
+    text: 'Profile',
+    link: '/profile',
+    icon: 'user',
+    auth: true,
+  },
+];
+
+const navbar = ({ isAuth }) => {
+  const navItems = items.filter(item => {
+    if (isAuth && item.auth) {
+      return true;
+    } else if (!isAuth && !item.auth) {
+      return true;
+    }
+    return false;
+  });
   return (
     <div className={classes.Container}>
       <div className={classes.Logo}>
-        <NavLink to="/"><Logo /></NavLink>
+        <NavLink to="/">
+          <Logo />
+        </NavLink>
       </div>
-      <Navigationitems />
+      <Navigationitems navItems={navItems} />
     </div>
   );
 };

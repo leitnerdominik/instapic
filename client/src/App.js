@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
@@ -14,6 +15,7 @@ import {
 import Instapic from './pages/Instapic/Instapic';
 import Login from './pages/Login/Login';
 import SignUp from './pages/SignUp/SignUp';
+import * as action from './store/actions/index';
 
 library.add(
   faIgloo,
@@ -37,7 +39,7 @@ class App extends Component {
     event.preventDefault();
     this.setState({ authLoading: true });
     fetch('http://localhost:8080/auth/signup', {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -57,6 +59,7 @@ class App extends Component {
         }
 
         if (response.status !== 200 && response.status !== 201) {
+          console.log(response);
           throw new Error('Signup failed!');
         }
 
@@ -75,53 +78,62 @@ class App extends Component {
 
   loginHandler = (event, authData) => {
     event.preventDefault();
-    this.setState({ authLoading: true });
-    fetch('http://localhost:8080/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: authData.email,
-        password: authData.password,
-      }),
-    })
-      .then(response => {
-        if (response.status === 422) {
-          throw new Error('Validation failed.');
-        }
-        if (response.status !== 200 && response.status !== 201) {
-          throw new Error('Authentication failed.');
-        }
+    const isSignUp = false;
+    this.props.onAuth(authData, isSignUp);
+    // this.setState({ authLoading: true });
+    // fetch('http://localhost:8080/auth/login', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     email: authData.email,
+    //     password: authData.password,
+    //   }),
+    // })
+    //   .then(response => {
+    //     if (response.status === 422) {
+    //       throw new Error('Validation failed.');
+    //     }
 
-        return response.json();
-      })
-      .then(jsonData => {
-        const { token, userId } = jsonData;
+    //     if (response.status === 401) {
+    //       throw new Error('E-Mail or Password wrong!');
+    //     }
 
-        this.setState({
-          isAuth: true,
-          token: token,
-          authLoading: false,
-          userId: userId,
-        });
+    //     if (response.status !== 200 && response.status !== 201) {
+    //       throw new Error('Authentication failed.');
+    //     }
 
-        localStorage.setItem('token', token);
-        localStorage.setItem('userId', userId);
-        const remainingMs = 60 * 60 * 1000; // 1h
-        const expiryDate = new Date(new Date.getTime() + remainingMs);
-        localStorage.setItem('expiryDate', expiryDate.toIsoString());
+    //     return response.json();
+    //   })
+    //   .then(jsonData => {
+    //     const { token, userId } = jsonData;
 
-        this.autoLogout(remainingMs);
-      })
-      .catch(err => {
-        console.log(err);
-        this.setState({
-          isAuth: false,
-          authLoading: false,
-          error: err,
-        });
-      });
+    //     this.setState({
+    //       isAuth: true,
+    //       token: token,
+    //       authLoading: false,
+    //       userId: userId,
+    //     });
+
+    //     localStorage.setItem('token', token);
+    //     localStorage.setItem('userId', userId);
+    //     const remainingMs = 60 * 60 * 1000; // 1h
+    //     const expiryDate = new Date(new Date().getTime() + remainingMs);
+    //     localStorage.setItem('expiryDate', expiryDate.toISOString());
+
+    //     this.autoLogout(remainingMs);
+
+    //     this.props.history.replace('/');
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //     this.setState({
+    //       isAuth: false,
+    //       authLoading: false,
+    //       error: err,
+    //     });
+    //   });
   };
 
   logoutHandler = () => {
@@ -141,7 +153,17 @@ class App extends Component {
     return (
       <Switch>
         <Route path="/" exact component={Instapic} />
-        <Route path="/login" exact component={Login} />
+        <Route
+          path="/login"
+          exact
+          render={props => (
+            <Login
+              onLogin={this.loginHandler}
+              loading={this.state.authLoading}
+              error={this.state.error}
+            />
+          )}
+        />
         <Route
           path="/signup"
           exact
@@ -154,9 +176,21 @@ class App extends Component {
             />
           )}
         />
+        <Route path="/logout" exact />
       </Switch>
     );
   }
 }
 
-export default withRouter(App);
+const mapDispatchToProps = dispatch => {
+  return {
+    onAuth: (authData, isSignUp) => dispatch(action.auth(authData, isSignUp)),
+  };
+};
+
+export default withRouter(
+  connect(
+    null,
+    mapDispatchToProps
+  )(App)
+);

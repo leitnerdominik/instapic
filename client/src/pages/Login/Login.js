@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Layout from '../../components/Layout/Layout';
+import Layout from '../../container/Layout/Layout';
 import Auth from '../../components/Auth/Auth';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
@@ -82,15 +82,15 @@ class Login extends Component {
 
   checkForm = event => {
     event.preventDefault();
-    const inputValues = {};
-    for (let inputKey in this.state.loginForm) {
-      inputValues[inputKey] = this.state.loginForm[inputKey].value;
-    }
 
-    console.log('InputvaluesObj: ', inputValues);
-    validationSchema.isValid(inputValues).then(validity => {
-      this.setState({ formIsValid: validity });
-    });
+    const { loginForm } = this.state;
+
+    const prepData = {
+      email: loginForm.email.value,
+      password: loginForm.password.value,
+    };
+
+    this.props.onLogin(event, prepData);
   };
 
   render() {
@@ -116,14 +116,17 @@ class Login extends Component {
     }
 
     let wrongForm = null;
-    if (formIsValid === false) {
+
+    if (this.props.error) {
+      wrongForm = <Error>{this.props.error.message}</Error>;
+    } else if (formIsValid === false) {
       wrongForm = <Error />;
     }
 
     return (
       <Layout>
         <Auth>
-          <Form onSubmit={this.checkForm}>
+          <Form onSubmit={event => this.checkForm(event)}>
             {wrongForm}
             {inputs}
             <Button type="submit">Login</Button>

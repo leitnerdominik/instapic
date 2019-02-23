@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Layout from '../../components/Layout/Layout';
+import Layout from '../../container/Layout/Layout';
 import Auth from '../../components/Auth/Auth';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
@@ -97,16 +97,48 @@ class SignUp extends Component {
       });
   };
 
-  checkForm = event => {
+  checkForm = (event) => {
     event.preventDefault();
-    const inputValues = {};
-    for (let inputKey in this.state.signupform) {
-      inputValues[inputKey] = this.state.signupform[inputKey].value;
+
+    const { signupform } = this.state;
+
+    const prepData = {
+      email: signupform.email.value,
+      name: signupform.name.value,
+      password: signupform.password.value,
+      passwordConfirm: signupform.passwordConfirm.value,
+    };
+
+    if(prepData.password !== prepData.passwordConfirm) {
+      this.setState(prevState => {
+        const updatedSignUpForm = {
+          ...prevState.signupform,
+          'password': {
+            ...prevState.signupform.password,
+            error: 'passwords dont match!',
+            valid: false,
+          },
+          'passwordConfirm': {
+            ...prevState.signupform.passwordConfirm,
+            error: 'passwords dont match!',
+            valid: false,
+          }
+        }
+
+        return { signupform: updatedSignUpForm}
+      });
+    } else {
+      this.props.onSignUp(event, prepData)
     }
 
-    validationSchema.isValid(inputValues).then(validity => {
-      this.setState({ formIsValid: validity });
-    });
+    // const inputValues = {};
+    // for (let inputKey in this.state.signupform) {
+    //   inputValues[inputKey] = this.state.signupform[inputKey].value;
+    // }
+
+    // validationSchema.isValid(inputValues).then(validity => {
+    //   this.setState({ formIsValid: validity });
+    // });
   };
 
   render() {
@@ -139,17 +171,10 @@ class SignUp extends Component {
       wrongForm = <Error>Verification failed. Please try again.</Error>;
     }
 
-    const prepData = {
-      email: signupform.email.value,
-      name: signupform.name.value,
-      password: signupform.password.value,
-      passwordConfirm: signupform.passwordConfirm.value,
-    };
-
     return (
       <Layout>
         <Auth>
-          <Form onSubmit={event => this.props.onSignUp(event, prepData)}>
+          <Form onSubmit={event => this.checkForm(event)}>
             {wrongForm}
             {inputs}
             <Button type="submit">Sign Up</Button>

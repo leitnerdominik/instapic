@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 
 import Button from '../../components/Button/Button';
-import Layout from '../../components/Layout/Layout';
+import Layout from '../../container/Layout/Layout';
 import ImageList from '../../components/ImageList/ImageList';
 
 import PostImage from '../../container/PostImage/PostImage';

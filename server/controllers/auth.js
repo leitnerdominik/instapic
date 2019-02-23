@@ -1,15 +1,16 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { validationResult } = require('express-validator/check')
+const { validationResult } = require('express-validator/check');
 
-const errorHandler = require('../util/error-handler');
+const { errorHandler } = require('../util/error-handler');
 
 const User = require('../models/user');
 
 exports.signup = (req, res, next) => {
-
   const errors = validationResult(req);
+  console.log('not in errors');
   if (!errors.isEmpty()) {
+    console.log('in errors');
     const error = new Error('Validation failed.');
     error.statusCode = 422;
     error.data = errors.array();
@@ -27,21 +28,25 @@ exports.signup = (req, res, next) => {
     throw error;
   }
 
-  bcrypt.hash(password, 12).then(hashedPw => {
-    const user = new User({
-      email: email,
-      name: name,
-      password: hashedPw
-    });
+  bcrypt
+    .hash(password, 12)
+    .then(hashedPw => {
+      const user = new User({
+        email: email,
+        name: name,
+        password: hashedPw,
+      });
 
-    return user.save();
-  }).then(user => {
-    res.status(201).json({message: 'User created!', userId: user._id});
-  }).catch(err => {
-    console.log(err);
-    errorHandler(err);
-  })
-}
+      return user.save();
+    })
+    .then(user => {
+      res.status(201).json({ message: 'User created!', userId: user._id });
+    })
+    .catch(err => {
+      console.log(err);
+      errorHandler(err, next);
+    });
+};
 
 exports.login = (req, res, next) => {
   const email = req.body.email;
@@ -57,7 +62,7 @@ exports.login = (req, res, next) => {
       }
 
       loadedUser = user;
-      return bcrypt(password, user.password);
+      return bcrypt.compare(password, user.password);
     })
     .then(isPasswordCorrect => {
       if (!isPasswordCorrect) {
@@ -72,7 +77,8 @@ exports.login = (req, res, next) => {
         { expiresIn: '1h' }
       );
       res.status(200).json({ token: token, userId: loadedUser._id.toString() });
-    }).catch(err => {
-      errorHandler(err);
+    })
+    .catch(err => {
+      errorHandler(err, next);
     });
 };
