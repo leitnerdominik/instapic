@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import Layout from '../../container/Layout/Layout';
 import Auth from '../../components/Auth/Auth';
@@ -33,6 +35,12 @@ class Login extends Component {
     },
     formIsValid: null,
   };
+
+  componentDidUpdate() {
+    if (this.props.isAuth) {
+      this.props.history.replace('/');
+    }
+  }
 
   inputChangeHandler = (input, value) => {
     this.setState(prevState => {
@@ -137,4 +145,10 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = state => {
+  return {
+    isAuth: state.isAuth,
+  };
+};
+
+export default withRouter(connect(mapStateToProps)(Login));
