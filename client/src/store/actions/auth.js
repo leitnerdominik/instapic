@@ -27,9 +27,9 @@ export const logout = () => {
   localStorage.removeItem('userId');
   localStorage.removeItem('expiryDate');
   return {
-    type: actionTypes.AUTH_LOGOUT
-  }
-}
+    type: actionTypes.AUTH_LOGOUT,
+  };
+};
 
 const autoLogout = remainingTime => {
   return dispatch => {
@@ -62,4 +62,22 @@ export const auth = (authData, isSignUp) => {
         dispatch(authFailed(err.response.data.message));
       });
   };
+};
+
+export const checkAuthState = () => {
+  return dispatch => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      dispatch(logout());
+    } else {
+      const expirationDate = new Date(localStorage.getItem('expiryDate'));
+      if (new Date() >= expirationDate) {
+        dispatch(logout());
+      } else {
+        const userId = localStorage.getItem('userId');
+        dispatch(authSuccess(token, userId));
+        dispatch(autoLogout(expirationDate.getTime() - new Date().getTime()))
+      }
+    }
+  } 
 };

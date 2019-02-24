@@ -36,6 +36,11 @@ class App extends Component {
     error: null,
   };
 
+
+  componentDidMount() {
+    this.props.onCheckAuthState();
+  }
+
   signupHandler = (event, authData) => {
     event.preventDefault();
     this.setState({ authLoading: true });
@@ -186,6 +191,7 @@ class App extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     onAuth: (authData, isSignUp) => dispatch(action.auth(authData, isSignUp)),
+    onCheckAuthState: () => dispatch(action.checkAuthState()),
   };
 };
 
