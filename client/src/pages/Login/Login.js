@@ -8,6 +8,7 @@ import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import Error from '../../components/Error/Error';
 import Form from '../../components/Form/Form';
+import Spinner from '../../components/Spinner/Spinner';
 
 import { validationSchema } from '../../util/is-valid';
 
@@ -135,6 +136,7 @@ class Login extends Component {
       <Layout>
         <Auth>
           <Form onSubmit={event => this.checkForm(event)}>
+            {this.props.loading ? <Spinner /> : null}
             {wrongForm}
             {inputs}
             <Button type="submit">Login</Button>
@@ -148,6 +150,7 @@ class Login extends Component {
 const mapStateToProps = state => {
   return {
     isAuth: state.isAuth,
+    loading: state.loading,
   };
 };
 
