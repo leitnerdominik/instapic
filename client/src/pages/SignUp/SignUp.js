@@ -6,6 +6,7 @@ import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import Error from '../../components/Error/Error';
 import Form from '../../components/Form/Form';
+import Spinner from '../../components/Spinner/Spinner';
 
 import { validationSchema } from '../../util/is-valid';
 
@@ -166,7 +167,7 @@ class SignUp extends Component {
     let wrongForm = null;
 
     if (this.props.error) {
-      wrongForm = <Error>{this.props.error.message}</Error>;
+      wrongForm = <Error>{this.props.error}</Error>;
     } else if (formIsValid === false) {
       wrongForm = <Error>Verification failed. Please try again.</Error>;
     }
@@ -177,7 +178,7 @@ class SignUp extends Component {
           <Form onSubmit={event => this.checkForm(event)}>
             {wrongForm}
             {inputs}
-            <Button type="submit">Sign Up</Button>
+            {this.props.loading ? <Spinner /> : <Button type="submit">Sign Up</Button>}
           </Form>
         </Auth>
       </Layout>

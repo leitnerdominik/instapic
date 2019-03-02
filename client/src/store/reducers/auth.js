@@ -17,7 +17,7 @@ const reducer = (state = initialState, action) => {
         loading: true,
         error: null,
       };
-    case actionTypes.AUTH_SUCCESS:
+    case actionTypes.AUTH_LOGIN_SUCCESS:
       return {
         ...state,
         isAuth: true,
@@ -26,6 +26,12 @@ const reducer = (state = initialState, action) => {
         loading: false,
         error: null,
       };
+    case actionTypes.AUTH_SIGNUP_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+      }
     case actionTypes.AUTH_FAILED:
       return {
         ...state,

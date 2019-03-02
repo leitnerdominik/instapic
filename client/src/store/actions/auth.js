@@ -7,11 +7,17 @@ const authStart = () => {
   };
 };
 
-const authSuccess = (token, userId) => {
+const authLoginSuccess = (token, userId) => {
   return {
-    type: actionTypes.AUTH_SUCCESS,
+    type: actionTypes.AUTH_LOGIN_SUCCESS,
     idToken: token,
     userId: userId,
+  };
+};
+
+const authSignupSuccess = () => {
+  return {
+    type: actionTypes.AUTH_SIGNUP_SUCCESS,
   };
 };
 
@@ -39,7 +45,7 @@ const autoLogout = remainingTime => {
   };
 };
 
-export const auth = (authData, isSignUp) => {
+export const authLogin = authData => {
   return dispatch => {
     dispatch(authStart());
     axiosAuth
@@ -54,12 +60,34 @@ export const auth = (authData, isSignUp) => {
         const remainingMs = 60 * 60 * 1000; // 1h
         const expiryDate = new Date(new Date().getTime() + remainingMs);
         localStorage.setItem('expiryDate', expiryDate.toISOString());
-        dispatch(authSuccess(token, userId));
+        dispatch(authLoginSuccess(token, userId));
         dispatch(autoLogout(remainingMs));
       })
       .catch(err => {
-        console.log('FAILED: ', err.response);
-        dispatch(authFailed(err.response.data.message));
+        let error = 'General Failure!';
+        if (err.response.data.message) {
+          error = err.response.data.message;
+        }
+        dispatch(authFailed(error));
+      });
+  };
+};
+
+export const authSignUp = authData => {
+  return dispatch => {
+    dispatch(authStart());
+    axiosAuth
+      .put('auth/signup', authData)
+      .then(response => {
+        dispatch(authSignupSuccess());
+      })
+      .catch(err => {
+        let error = 'General Failure!';
+        if (err.response.data.message) {
+          error = err.response.data.message;
+          console.log(error);
+        }
+        dispatch(authFailed(error));
       });
   };
 };
@@ -75,9 +103,9 @@ export const checkAuthState = () => {
         dispatch(logout());
       } else {
         const userId = localStorage.getItem('userId');
-        dispatch(authSuccess(token, userId));
-        dispatch(autoLogout(expirationDate.getTime() - new Date().getTime()))
+        dispatch(authLoginSuccess(token, userId));
+        dispatch(autoLogout(expirationDate.getTime() - new Date().getTime()));
       }
     }
-  } 
+  };
 };

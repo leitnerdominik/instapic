@@ -127,7 +127,7 @@ class Login extends Component {
     let wrongForm = null;
 
     if (this.props.error) {
-      wrongForm = <Error>{this.props.error.message}</Error>;
+      wrongForm = <Error>{this.props.error}</Error>;
     } else if (formIsValid === false) {
       wrongForm = <Error />;
     }
@@ -136,10 +136,9 @@ class Login extends Component {
       <Layout>
         <Auth>
           <Form onSubmit={event => this.checkForm(event)}>
-            {this.props.loading ? <Spinner /> : null}
             {wrongForm}
             {inputs}
-            <Button type="submit">Login</Button>
+            {this.props.loading ? <Spinner /> : <Button type="submit">Login</Button>}
           </Form>
         </Auth>
       </Layout>
@@ -150,7 +149,6 @@ class Login extends Component {
 const mapStateToProps = state => {
   return {
     isAuth: state.isAuth,
-    loading: state.loading,
   };
 };
 

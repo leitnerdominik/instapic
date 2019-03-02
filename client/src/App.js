@@ -17,6 +17,7 @@ import Login from './pages/Login/Login';
 import SignUp from './pages/SignUp/SignUp';
 import Logout from './pages/Logout/Logout';
 import * as action from './store/actions/index';
+import auth from './components/Auth/Auth';
 
 library.add(
   faIgloo,
@@ -36,110 +37,54 @@ class App extends Component {
     error: null,
   };
 
-
   componentDidMount() {
     this.props.onCheckAuthState();
   }
 
   signupHandler = (event, authData) => {
     event.preventDefault();
-    this.setState({ authLoading: true });
-    fetch('http://localhost:8080/auth/signup', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: authData.email,
-        name: authData.name,
-        password: authData.password,
-        passwordConfirm: authData.passwordConfirm,
-      }),
-    })
-      .then(response => {
-        if (response.status === 422) {
-          throw new Error('Validation failed! Is the email already used?');
-        }
-        if (response.status === 401) {
-          throw new Error('Passwords dont match!');
-        }
-
-        if (response.status !== 200 && response.status !== 201) {
-          console.log(response);
-          throw new Error('Signup failed!');
-        }
-
-        return response.json();
-      })
-      .then(jsonData => {
-        console.log('Props: ', this.props);
-        this.setState({ isAuth: false, authLoading: false });
-        this.props.history.replace('/');
-      })
-      .catch(err => {
-        console.log(err);
-        this.setState({ error: err, authLoading: false, isAuth: false });
-      });
-  };
-
-  loginHandler = (event, authData) => {
-    event.preventDefault();
-    const isSignUp = false;
-    this.props.onAuth(authData, isSignUp);
+    this.props.onAuthSignUp(authData);
     // this.setState({ authLoading: true });
-    // fetch('http://localhost:8080/auth/login', {
-    //   method: 'POST',
+    // fetch('http://localhost:8080/auth/signup', {
+    //   method: 'PUT',
     //   headers: {
     //     'Content-Type': 'application/json',
     //   },
     //   body: JSON.stringify({
     //     email: authData.email,
+    //     name: authData.name,
     //     password: authData.password,
+    //     passwordConfirm: authData.passwordConfirm,
     //   }),
     // })
     //   .then(response => {
     //     if (response.status === 422) {
-    //       throw new Error('Validation failed.');
+    //       throw new Error('Validation failed! Is the email already used?');
     //     }
-
     //     if (response.status === 401) {
-    //       throw new Error('E-Mail or Password wrong!');
+    //       throw new Error('Passwords dont match!');
     //     }
-
     //     if (response.status !== 200 && response.status !== 201) {
-    //       throw new Error('Authentication failed.');
+    //       console.log(response);
+    //       throw new Error('Signup failed!');
     //     }
 
     //     return response.json();
     //   })
     //   .then(jsonData => {
-    //     const { token, userId } = jsonData;
-
-    //     this.setState({
-    //       isAuth: true,
-    //       token: token,
-    //       authLoading: false,
-    //       userId: userId,
-    //     });
-
-    //     localStorage.setItem('token', token);
-    //     localStorage.setItem('userId', userId);
-    //     const remainingMs = 60 * 60 * 1000; // 1h
-    //     const expiryDate = new Date(new Date().getTime() + remainingMs);
-    //     localStorage.setItem('expiryDate', expiryDate.toISOString());
-
-    //     this.autoLogout(remainingMs);
-
+    //     console.log('Props: ', this.props);
+    //     this.setState({ isAuth: false, authLoading: false });
     //     this.props.history.replace('/');
     //   })
     //   .catch(err => {
     //     console.log(err);
-    //     this.setState({
-    //       isAuth: false,
-    //       authLoading: false,
-    //       error: err,
-    //     });
+    //     this.setState({ error: err, authLoading: false, isAuth: false });
     //   });
+  };
+
+  loginHandler = (event, authData) => {
+    event.preventDefault();
+    this.props.onAuthLogin(authData);
   };
 
   logoutHandler = () => {
@@ -165,8 +110,8 @@ class App extends Component {
           render={props => (
             <Login
               onLogin={this.loginHandler}
-              loading={this.state.authLoading}
-              error={this.state.error}
+              loading={this.props.loading}
+              error={this.props.error}
             />
           )}
         />
@@ -177,8 +122,8 @@ class App extends Component {
             <SignUp
               {...props}
               onSignUp={this.signupHandler}
-              loading={this.state.authLoading}
-              error={this.state.error}
+              loading={this.props.loading}
+              error={this.props.error}
             />
           )}
         />
@@ -188,16 +133,24 @@ class App extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    error: state.error,
+    loading: state.loading,
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return {
-    onAuth: (authData, isSignUp) => dispatch(action.auth(authData, isSignUp)),
+    onAuthLogin: authData => dispatch(action.authLogin(authData)),
+    onAuthSignUp: authData => dispatch(action.authSignUp(authData)),
     onCheckAuthState: () => dispatch(action.checkAuthState()),
   };
 };
 
 export default withRouter(
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   )(App)
 );
