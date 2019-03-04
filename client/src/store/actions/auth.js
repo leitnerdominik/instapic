@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes';
-import axiosAuth from '../../util/axios-auth';
+import axiosUtil from '../../util/axios-util';
 
 const authStart = () => {
   return {
@@ -48,24 +48,22 @@ const autoLogout = remainingTime => {
 export const authLogin = authData => {
   return dispatch => {
     dispatch(authStart());
-    axiosAuth
+    axiosUtil
       .post('auth/login', authData)
       .then(response => {
         console.log('SUCCESS: ', response);
-        const {
-          data: { token, userId },
-        } = response;
-        localStorage.setItem('token', token);
-        localStorage.setItem('userId', userId);
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('userId', response.data.userId);
         const remainingMs = 60 * 60 * 1000; // 1h
         const expiryDate = new Date(new Date().getTime() + remainingMs);
         localStorage.setItem('expiryDate', expiryDate.toISOString());
-        dispatch(authLoginSuccess(token, userId));
+        dispatch(authLoginSuccess(response.data.token, response.data.userId));
         dispatch(autoLogout(remainingMs));
       })
       .catch(err => {
+        console.log(err);
         let error = 'General Failure!';
-        if (err.response.data.message) {
+        if (err.response) {
           error = err.response.data.message;
         }
         dispatch(authFailed(error));
@@ -76,12 +74,17 @@ export const authLogin = authData => {
 export const authSignUp = authData => {
   return dispatch => {
     dispatch(authStart());
-    axiosAuth
+    axiosUtil
       .put('auth/signup', authData)
       .then(response => {
-        dispatch(authSignupSuccess());
+        if (response.status === 201) {
+          dispatch(authSignupSuccess());
+        } else {
+          throw new Error();
+        }
       })
       .catch(err => {
+        console.log(err);
         let error = 'General Failure!';
         if (err.response.data.message) {
           error = err.response.data.message;

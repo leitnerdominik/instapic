@@ -8,10 +8,8 @@ const User = require('../models/user');
 
 exports.signup = (req, res, next) => {
   const errors = validationResult(req);
-  console.log('not in errors');
   if (!errors.isEmpty()) {
-    console.log('in errors');
-    const error = new Error('Validation failed.');
+    const error = new Error(errors.array()[0].msg);
     error.statusCode = 422;
     error.data = errors.array();
     throw error;

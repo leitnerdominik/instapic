@@ -30,7 +30,7 @@ class Logout extends Component {
 
 const mapStateToProps = state => {
   return {
-    isAuth: state.isAuth
+    isAuth: state.auth.isAuth
   }
 }
 

@@ -135,8 +135,8 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    error: state.error,
-    loading: state.loading,
+    error: state.auth.error,
+    loading: state.auth.loading,
   }
 }
 
