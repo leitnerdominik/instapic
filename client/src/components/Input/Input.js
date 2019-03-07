@@ -33,9 +33,20 @@ const input = props => {
       value={value}
       type={type}
       onChange={event => onChange(id, event.target.value)}
-      onBlur={onBlur ? () => onBlur(id): null}
+      onBlur={onBlur ? () => onBlur(id) : null} // TODO: besser loesen
     />
   );
+
+  if (control === 'filepicker') {
+    field = (
+      <input
+        id={id}
+        className={inputClasses.join(' ')}
+        type={type}
+        onChange={event => onChange(id, event.target.value, event.target.files)}
+      />
+    );
+  }
 
   if (control === 'textarea') {
     field = (
@@ -43,9 +54,9 @@ const input = props => {
         id={id}
         className={inputClasses.join(' ')}
         value={value}
-        rows='5'
+        rows="5"
         onChange={event => onChange(id, event.target.value)}
-        onBlur={onBlur ? () => onBlur(id): null}
+        onBlur={onBlur ? () => onBlur(id) : null}
       />
     );
   }

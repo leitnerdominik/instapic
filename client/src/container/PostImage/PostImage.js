@@ -7,6 +7,8 @@ import Form from '../../components/Form/Form';
 import Button from '../../components/Button/Button';
 import * as action from '../../store/actions/index';
 
+import { generateBase64FromImage } from '../../util/image';
+
 import classes from './PostImage.module.css';
 
 class PostImage extends Component {
@@ -29,7 +31,7 @@ class PostImage extends Component {
           value: '',
           id: 'image',
           type: 'file',
-          control: 'input',
+          control: 'filepicker',
           valid: false,
           error: '',
         },
@@ -47,13 +49,17 @@ class PostImage extends Component {
     };
   }
 
-  inputChangeHandler = (input, value) => {
+  inputChangeHandler = (input, value, files) => {
+    console.log('FILES: ', files);
+    // if (files) {
+    //   generateBase64FromImage(files[0]).then().catch();
+    // }
     this.setState(prevState => {
       const updateForm = {
         ...prevState.postImg,
         [input]: {
           ...prevState.postImg[input],
-          value: value,
+          value: files ? files[0] : value,
         },
       };
 
@@ -71,7 +77,6 @@ class PostImage extends Component {
       imgUrl: postImg.image.value,
       description: postImg.description.value,
     };
-    console.log(postData.imgUrl)
     this.props.onAddPost(postData, this.props.token);
   };
 

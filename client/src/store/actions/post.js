@@ -23,12 +23,17 @@ const addPostFail = error => {
 
 export const addPost = (postData, token) => {
   return dispatch => {
-    console.log(token);
-    dispatch(addPostStart);
+    console.log('action postdata: ', postData);
+    dispatch(addPostStart());
+    
+    const formData = new FormData();
+    formData.append('title', postData.title);
+    formData.append('imgUrl', postData.imgUrl);
+    formData.append('description', postData.description);
     axiosUtil
-      .post('post/post', postData, {
+      .post('post/post', formData, {
         headers: {
-          Authorization: 'bearer ' + token,
+          Authorization: 'Bearer ' + token,
         },
       })
       .then(response => {

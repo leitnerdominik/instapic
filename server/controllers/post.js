@@ -13,7 +13,7 @@ exports.getPosts = (req, res, next) => {
 
 exports.createPost = (req, res, next) => {
   const title = req.body.title;
-  const imgUrl = req.body.imgUrl;
+  const imgUrl = req.file.path;
   const description = req.body.description;
   let creator;
   res.json({
