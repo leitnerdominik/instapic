@@ -1,10 +1,12 @@
 import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
 
 import Button from '../../components/Button/Button';
 import Layout from '../../container/Layout/Layout';
 import ImageList from '../../components/ImageList/ImageList';
 import PostImage from '../../container/PostImage/PostImage';
-import axios from '../../util/axios-util';
+
+import * as action from '../../store/actions/index';
 
 import image1 from '../../images/image1.jpg';
 import image2 from '../../images/image2.jpg';
@@ -46,21 +48,15 @@ class Instapic extends Component {
   };
 
   componentDidMount() {
-    axios
-      .get('/post/posts')
-      .then(response => {
-        console.log(response);
-        this.setState({ posts: response.data });
-      })
-      .catch(err => console.log(err));
+    this.props.onFetchPosts();
   }
-
+  
   togglePostImage = () => {
     this.setState(prevState => ({
       showPostImage: !prevState.showPostImage,
     }));
   };
-
+  
   render() {
     return (
       <Fragment>
@@ -71,13 +67,28 @@ class Instapic extends Component {
           <div className={classes.Options}>
             <Button onClick={this.togglePostImage}>Upload Image</Button>
           </div>
-          {/* {this.state.posts.length > 0 ? (
-            <ImageList images={this.state.images} />
-          ) : null} */}
+          {this.props.posts.length > 0 ? (
+            <ImageList images={this.props.posts} />
+          ) : null}
         </Layout>
       </Fragment>
     );
   }
 }
 
-export default Instapic;
+const mapStateToProps = state => {
+  return {
+    posts: state.post.posts,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onFetchPosts: () => dispatch(action.fetchPosts()),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Instapic);

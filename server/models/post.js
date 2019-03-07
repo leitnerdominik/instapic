@@ -7,7 +7,7 @@ const postSchema = new Schema(
       type: String,
       required: true,
     },
-    imagePath: {
+    imgUrl: {
       type: String,
       required: true,
     },

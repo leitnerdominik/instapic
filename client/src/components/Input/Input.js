@@ -33,7 +33,7 @@ const input = props => {
       value={value}
       type={type}
       onChange={event => onChange(id, event.target.value)}
-      onBlur={() => onBlur(id)}
+      onBlur={onBlur ? () => onBlur(id): null}
     />
   );
 
@@ -45,7 +45,7 @@ const input = props => {
         value={value}
         rows='5'
         onChange={event => onChange(id, event.target.value)}
-        onBlur={() => onBlur(id)}
+        onBlur={onBlur ? () => onBlur(id): null}
       />
     );
   }

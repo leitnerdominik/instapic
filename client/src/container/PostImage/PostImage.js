@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import Modal from '../../components/Modal/Modal';
 import Input from '../../components/Input/Input';
 import Form from '../../components/Form/Form';
 import Button from '../../components/Button/Button';
+import * as action from '../../store/actions/index';
 
 import classes from './PostImage.module.css';
 
@@ -45,6 +47,34 @@ class PostImage extends Component {
     };
   }
 
+  inputChangeHandler = (input, value) => {
+    this.setState(prevState => {
+      const updateForm = {
+        ...prevState.postImg,
+        [input]: {
+          ...prevState.postImg[input],
+          value: value,
+        },
+      };
+
+      return {
+        postImg: updateForm,
+      };
+    });
+  };
+
+  addPostHandler = event => {
+    event.preventDefault();
+    const { postImg } = this.state;
+    const postData = {
+      title: postImg.title.value,
+      imgUrl: postImg.image.value,
+      description: postImg.description.value,
+    };
+    console.log(postData.imgUrl)
+    this.props.onAddPost(postData, this.props.token);
+  };
+
   render() {
     const { close } = this.props;
     const { postImg } = this.state;
@@ -61,6 +91,7 @@ class PostImage extends Component {
           control={postImg[inputKey].control}
           valid={postImg[inputKey].valid}
           errorMessage={postImg[inputKey].error}
+          onChange={this.inputChangeHandler}
         />
       );
     }
@@ -74,7 +105,7 @@ class PostImage extends Component {
             <Button design="cancel" onClick={close}>
               Cancel
             </Button>
-            <Button design="submit" type="submit">
+            <Button design="submit" onClick={this.addPostHandler} type="submit">
               Save
             </Button>
           </div>
@@ -84,4 +115,19 @@ class PostImage extends Component {
   }
 }
 
-export default PostImage;
+const mapStateToProps = state => {
+  return {
+    token: state.auth.token,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onAddPost: (postData, token) => dispatch(action.addPost(postData, token)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PostImage);

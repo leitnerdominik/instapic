@@ -3,33 +3,33 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
   loading: false,
   error: null,
-  post: null,
-};
+  posts: [],
+}
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.ADD_POST_START:
+    case actionTypes.FETCH_POSTS_START:
       return {
         ...state,
         loading: true,
         error: null,
-      };
-    case actionTypes.ADD_POST_SUCCESS:
+      }
+    case actionTypes.FETCH_POSTS_SUCCESS:
       return {
         ...state,
-        post: action.post,
+        posts: action.posts,
         loading: false,
         error: null,
-      };
-    case actionTypes.ADD_POST_FAIL:
+      }
+    case actionTypes.FETCH_POSTS_FAIL:
       return {
         ...state,
-        loading: false,
         error: action.error,
-      };
+        loading: false,
+      }
     default:
       return state;
   }
-};
+}
 
 export default reducer;

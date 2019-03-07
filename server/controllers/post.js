@@ -13,18 +13,20 @@ exports.getPosts = (req, res, next) => {
 
 exports.createPost = (req, res, next) => {
   const title = req.body.title;
-  const imagePath = req.body.imagePath;
+  const imgUrl = req.body.imgUrl;
   const description = req.body.description;
+  let creator;
   res.json({
     message: 'Post created!',
     title: title,
-    imagePath: imagePath,
+    imgUrl: imgUrl,
     description: description,
   });
   const post = new Post({
     title,
     description,
-    imagePath,
+    imgUrl,
+    creator: req.userId,
   });
   post
     .save()

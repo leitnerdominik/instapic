@@ -1,35 +1,43 @@
 import * as actionTypes from './actionTypes';
 import axiosUtil from '../../util/axios-util';
 
-const fetchPostsStart = () => {
+const addPostStart = () => {
   return {
-    type: actionTypes.FETCH_POSTS_START,
+    type: actionTypes.ADD_POST_START,
   };
 };
 
-const fetchPostsSuccess = posts => {
+const addPostSuccess = post => {
   return {
-    type: actionTypes.FETCH_POSTS_SUCCESS,
-    posts: posts,
+    type: actionTypes.ADD_POST_SUCCESS,
+    post: post,
   };
 };
 
-const fetchPostsFail = error => {
+const addPostFail = error => {
   return {
-    type: actionTypes.FETCH_POSTS_FAIL,
+    type: actionTypes.ADD_POST_FAIL,
     error: error,
   };
 };
 
-export const fetchPosts = () => {
+export const addPost = (postData, token) => {
   return dispatch => {
-    dispatch(fetchPostsStart);
+    console.log(token);
+    dispatch(addPostStart);
     axiosUtil
-      .get('post/posts')
-      .then(response => {
-        
-        console.log(response);
+      .post('post/post', postData, {
+        headers: {
+          Authorization: 'bearer ' + token,
+        },
       })
-      .catch(err => console.log(err));
+      .then(response => {
+        console.log(response);
+        // dispatch(addPostSuccess(post))
+      })
+      .catch(error => {
+        // dispatch(addPostFail(error))
+        console.log(error);
+      });
   };
 };
