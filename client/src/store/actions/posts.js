@@ -1,6 +1,8 @@
 import * as actionTypes from './actionTypes';
 import axiosUtil from '../../util/axios-util';
 
+import { host } from '../../config.json';
+
 const fetchPostsStart = () => {
   return {
     type: actionTypes.FETCH_POSTS_START,
@@ -8,7 +10,6 @@ const fetchPostsStart = () => {
 };
 
 const fetchPostsSuccess = posts => {
-  console.log(posts);
   return {
     type: actionTypes.FETCH_POSTS_SUCCESS,
     posts: posts,
@@ -24,17 +25,19 @@ const fetchPostsFail = error => {
 
 export const fetchPosts = () => {
   return dispatch => {
-    dispatch(fetchPostsStart);
+    dispatch(fetchPostsStart());
     axiosUtil
       .get('post/posts')
       .then(response => {
-        console.log(response);
-        const posts = response.data;
+        const posts = response.data.map(post => ({
+          ...post,
+          imgUrl: host + post.imgUrl,
+        }));
         dispatch(fetchPostsSuccess(posts));
       })
-      .catch(err => {
-        console.log(err);
-        dispatch(fetchPostsFail(err));
+      .catch(error => {
+        console.log(error);
+        dispatch(fetchPostsFail(error));
       });
   };
 };

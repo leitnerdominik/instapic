@@ -23,9 +23,8 @@ const addPostFail = error => {
 
 export const addPost = (postData, token) => {
   return dispatch => {
-    console.log('action postdata: ', postData);
     dispatch(addPostStart());
-    
+
     const formData = new FormData();
     formData.append('title', postData.title);
     formData.append('imgUrl', postData.imgUrl);
@@ -38,11 +37,11 @@ export const addPost = (postData, token) => {
       })
       .then(response => {
         console.log(response);
-        // dispatch(addPostSuccess(post))
+        // dispatch(addPostSuccess());
       })
       .catch(error => {
-        // dispatch(addPostFail(error))
-        console.log(error);
+        const errorText = error.response.data.message;
+        dispatch(addPostFail(errorText));
       });
   };
 };
