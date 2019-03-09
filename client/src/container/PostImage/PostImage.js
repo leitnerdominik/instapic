@@ -5,6 +5,9 @@ import Modal from '../../components/Modal/Modal';
 import Input from '../../components/Input/Input';
 import Form from '../../components/Form/Form';
 import Button from '../../components/Button/Button';
+import Image from '../../components/Image/Image';
+import Error from '../../components/Error/Error';
+
 import * as action from '../../store/actions/index';
 
 import { generateBase64FromImage } from '../../util/image';
@@ -45,15 +48,21 @@ class PostImage extends Component {
           error: '',
         },
       },
+      imagePreview: null,
       formIsValid: null,
     };
   }
 
   inputChangeHandler = (input, value, files) => {
-    console.log('FILES: ', files);
-    // if (files) {
-    //   generateBase64FromImage(files[0]).then().catch();
-    // }
+    if (files) {
+      generateBase64FromImage(files[0])
+        .then(b64 => {
+          this.setState({ imagePreview: b64 });
+        })
+        .catch(error => {
+          this.setState({ imagePreview: null });
+        });
+    }
     this.setState(prevState => {
       const updateForm = {
         ...prevState.postImg,
@@ -84,28 +93,52 @@ class PostImage extends Component {
     const { close } = this.props;
     const { postImg } = this.state;
 
-    let inputs = [];
-    for (let inputKey in postImg) {
-      inputs.push(
-        <Input
-          label={postImg[inputKey].label}
-          value={postImg[inputKey].value}
-          key={postImg[inputKey].id}
-          id={postImg[inputKey].id}
-          type={postImg[inputKey].type}
-          control={postImg[inputKey].control}
-          valid={postImg[inputKey].valid}
-          errorMessage={postImg[inputKey].error}
-          onChange={this.inputChangeHandler}
-        />
-      );
-    }
-
     return (
       <Modal close={close}>
         <h2>Upload Image</h2>
+        {this.props.error ? <Error>{this.props.error}</Error> : null}
         <Form>
-          {inputs}
+          <Input
+            label={postImg.title.label}
+            value={postImg.title.value}
+            key={postImg.title.id}
+            id={postImg.title.id}
+            type={postImg.title.type}
+            control={postImg.title.control}
+            valid={postImg.title.valid}
+            errorMessage={postImg.title.error}
+            onChange={this.inputChangeHandler}
+          />
+          <Input
+            label={postImg.image.label}
+            value={postImg.image.value}
+            key={postImg.image.id}
+            id={postImg.image.id}
+            type={postImg.image.type}
+            control={postImg.image.control}
+            valid={postImg.image.valid}
+            errorMessage={postImg.image.error}
+            onChange={this.inputChangeHandler}
+          />
+          {!this.state.imagePreview && <p>Please choose an image.</p>}
+          {this.state.imagePreview && (
+            <Image
+              containerWidth="100px"
+              containerHeight="100px"
+              imgUrl={this.state.imagePreview}
+            />
+          )}
+          <Input
+            label={postImg.description.label}
+            value={postImg.description.value}
+            key={postImg.description.id}
+            id={postImg.description.id}
+            type={postImg.description.type}
+            control={postImg.description.control}
+            valid={postImg.description.valid}
+            errorMessage={postImg.description.error}
+            onChange={this.inputChangeHandler}
+          />
           <div className={classes.ButtonContainer}>
             <Button design="cancel" onClick={close}>
               Cancel
@@ -123,6 +156,7 @@ class PostImage extends Component {
 const mapStateToProps = state => {
   return {
     token: state.auth.token,
+    error: state.post.error,
   };
 };
 
