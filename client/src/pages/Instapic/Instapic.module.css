@@ -11,4 +11,9 @@
       -ms-flex-pack: end;
           justify-content: flex-end;
 }
+
+.Center {
+  text-align: center;
+  margin-top: 2rem;
+}
 /*# sourceMappingURL=Instapic.module.css.map */
