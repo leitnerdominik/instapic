@@ -18,13 +18,14 @@ const input = props => {
   const inputClasses = [classes.InputField];
 
   // checken ob funkt
+  // console.log(errorMessage)
   let errorText = null;
-  if (errorMessage.length > 0 && !valid) {
-    inputClasses.push(classes.InvalidInput);
-    errorText = <span className={classes.ErrorText}>{errorMessage}</span>;
-  } else if (valid) {
-    inputClasses.push(classes.ValidInput);
-  }
+  // if (errorMessage && !valid) {
+  //   inputClasses.push(classes.InvalidInput);
+  //   errorText = <span className={classes.ErrorText}>{errorMessage}</span>;
+  // } else if (valid) {
+  //   inputClasses.push(classes.ValidInput);
+  // }
 
   let field = (
     <input

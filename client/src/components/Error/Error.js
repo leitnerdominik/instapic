@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import classes from './Error.module.css';
 
-const error = ({ type, children }) => {
+const error = ({ children }) => {
   return (
     <div className={classes.WrongForm}>
       <FontAwesomeIcon icon="exclamation-triangle" />
