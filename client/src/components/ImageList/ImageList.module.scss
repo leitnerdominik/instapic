@@ -7,14 +7,16 @@
 }
 
 .Container {
+  position: relative;
   max-width: 400px;
+  height: 550px;
   padding: 1%;
   background: white;
   margin: 20px;
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  // justify-content: center;
   align-items: center;
 
   p {
@@ -32,6 +34,11 @@
 }
 
 .ButtonContainer {
+  position: absolute;
+  box-sizing: border-box;
+  bottom: 0;
+  right: 0;
+  padding: 20px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -8,13 +9,19 @@ import Button from '../Button/Button';
 import classes from './ImageList.module.css';
 
 const imageList = ({ images }) => {
-  const img = images.map(image => (
+  const maxDescriptionLength = 100;
+  const img = images.map(image => {
+    let description = image.description;
+    if (image.description.length > maxDescriptionLength) {
+      description = `${image.description.slice(0, maxDescriptionLength)}...`
+    }
+    return (
     <div key={image._id} className={classes.Container}>
-      <h2>{image.title}</h2>
+      <Link to={`post/${image._id}`}><h2>{image.title}</h2></Link>
       <div className={classes.ImageContainer}>
         <Image imgUrl={image.imgUrl} />
       </div>
-      <p>{image.description}</p>
+      <p>{description}</p>
       <div className={classes.ButtonContainer}>
         <Button design="transparent">
           <FontAwesomeIcon
@@ -29,7 +36,8 @@ const imageList = ({ images }) => {
         <Button>Edit</Button>
       </div>
     </div>
-  ));
+    )
+  });
   return <div className={classes.ImageList}>{img}</div>;
 };
 
