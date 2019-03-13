@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ToastContainer } from 'react-toastify';
 
 import Layout from '../../container/Layout/Layout';
 import Auth from '../../components/Auth/Auth';
@@ -98,7 +99,7 @@ class SignUp extends Component {
       });
   };
 
-  checkForm = (event) => {
+  checkForm = event => {
     event.preventDefault();
 
     const { signupform } = this.state;
@@ -110,26 +111,27 @@ class SignUp extends Component {
       passwordConfirm: signupform.passwordConfirm.value,
     };
 
-    if(prepData.password !== prepData.passwordConfirm) {
+    if (prepData.password !== prepData.passwordConfirm) {
       this.setState(prevState => {
         const updatedSignUpForm = {
           ...prevState.signupform,
-          'password': {
+          password: {
             ...prevState.signupform.password,
             error: 'passwords dont match!',
             valid: false,
           },
-          'passwordConfirm': {
+          passwordConfirm: {
             ...prevState.signupform.passwordConfirm,
             error: 'passwords dont match!',
             valid: false,
-          }
-        }
+          },
+        };
 
-        return { signupform: updatedSignUpForm}
+        return { signupform: updatedSignUpForm };
       });
     } else {
-      this.props.onSignUp(event, prepData)
+      this.props.onSignUp(event, prepData);
+      this.props.history.replace('/login');
     }
 
     // const inputValues = {};
@@ -166,19 +168,22 @@ class SignUp extends Component {
 
     let wrongForm = null;
 
-    if (this.props.error) {
-      wrongForm = <Error>{this.props.error}</Error>;
-    } else if (formIsValid === false) {
+    if (formIsValid === false) {
       wrongForm = <Error>Verification failed. Please try again.</Error>;
     }
 
     return (
       <Layout>
         <Auth>
+          <ToastContainer position="top-center" />
           <Form onSubmit={event => this.checkForm(event)}>
             {wrongForm}
             {inputs}
-            {this.props.loading ? <Spinner /> : <Button type="submit">Sign Up</Button>}
+            {this.props.loading ? (
+              <Spinner />
+            ) : (
+              <Button type="submit">Sign Up</Button>
+            )}
           </Form>
         </Auth>
       </Layout>

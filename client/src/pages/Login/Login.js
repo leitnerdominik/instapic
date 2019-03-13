@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import Layout from '../../container/Layout/Layout';
 import Auth from '../../components/Auth/Auth';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
-import Error from '../../components/Error/Error';
 import Form from '../../components/Form/Form';
 import Spinner from '../../components/Spinner/Spinner';
 
@@ -34,7 +34,6 @@ class Login extends Component {
         error: '',
       },
     },
-    formIsValid: null,
   };
 
   componentDidUpdate() {
@@ -103,7 +102,7 @@ class Login extends Component {
   };
 
   render() {
-    const { loginForm, formIsValid } = this.state;
+    const { loginForm } = this.state;
 
     let inputs = [];
 
@@ -124,21 +123,17 @@ class Login extends Component {
       );
     }
 
-    let wrongForm = null;
-
-    if (this.props.error) {
-      wrongForm = <Error>{this.props.error}</Error>;
-    } else if (formIsValid === false) {
-      wrongForm = <Error />;
-    }
-
     return (
       <Layout>
         <Auth>
+          <ToastContainer position="top-center" />
           <Form onSubmit={event => this.checkForm(event)}>
-            {wrongForm}
             {inputs}
-            {this.props.loading ? <Spinner /> : <Button type="submit">Login</Button>}
+            {this.props.loading ? (
+              <Spinner />
+            ) : (
+              <Button type="submit">Login</Button>
+            )}
           </Form>
         </Auth>
       </Layout>

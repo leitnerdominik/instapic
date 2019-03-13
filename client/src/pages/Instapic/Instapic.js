@@ -1,5 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 import Button from '../../components/Button/Button';
 import Layout from '../../container/Layout/Layout';
@@ -30,19 +33,34 @@ class Instapic extends Component {
   render() {
     return (
       <Fragment>
-        {this.state.showPostImage ? (
-          <PostImage close={this.togglePostImage} />
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnVisibilityChange
+          draggable
+          pauseOnHover
+        />
+        {this.props.showPostModal ? (
+          <PostImage
+            toggleShow={this.props.onShowPostImage}
+          />
         ) : null}
         <Layout>
-          <div className={classes.Options}>
-            <Button onClick={this.togglePostImage}>Upload Image</Button>
-          </div>
+          {this.props.isAuth && (
+            <div className={classes.Options}>
+              <Button onClick={this.props.onShowPostImage}>Upload Image</Button>
+            </div>
+          )}
           {this.props.loadingPosts && (
             <div className={classes.Center}>
               <Spinner />
             </div>
           )}
-          {this.props.posts.length <= 0 && !this.props.loadingPosts ?  (
+          {this.props.posts.length <= 0 && !this.props.loadingPosts ? (
             <p className={classes.Center}>No posts found!</p>
           ) : null}
           {this.props.posts.length > 0 && !this.props.loadingPosts ? (
@@ -56,14 +74,19 @@ class Instapic extends Component {
 
 const mapStateToProps = state => {
   return {
+    isAuth: state.auth.isAuth,
     posts: state.posts.posts,
     loadingPosts: state.posts.loading,
+    addPostError: state.post.error,
+    showPostModal: state.post.showPostModal,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onFetchPosts: () => dispatch(action.fetchPosts()),
+    onShowPostImage: () => dispatch(action.togglePostModal()),
+    
   };
 };
 
