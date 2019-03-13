@@ -1,3 +1,3 @@
 export { authLogin, authSignUp, logout, checkAuthState } from './auth';
 export { fetchPosts } from './posts';
-export { addPost } from './post';
+export { addPost, getPost, togglePostModal } from './post';
