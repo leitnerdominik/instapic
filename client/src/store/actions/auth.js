@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axiosUtil from '../../util/axios-util';
+import { toast } from 'react-toastify';
 
 const authStart = () => {
   return {
@@ -67,6 +68,7 @@ export const authLogin = authData => {
           error = err.response.data.message;
         }
         dispatch(authFailed(error));
+        toast.error(error);
       });
   };
 };
@@ -79,6 +81,7 @@ export const authSignUp = authData => {
       .then(response => {
         if (response.status === 201) {
           dispatch(authSignupSuccess());
+          toast.success('User Created!');
         } else {
           throw new Error();
         }
@@ -91,6 +94,7 @@ export const authSignUp = authData => {
           console.log(error);
         }
         dispatch(authFailed(error));
+        toast.error(error);
       });
   };
 };

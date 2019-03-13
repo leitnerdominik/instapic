@@ -6,9 +6,9 @@ import Input from '../../components/Input/Input';
 import Form from '../../components/Form/Form';
 import Button from '../../components/Button/Button';
 import Image from '../../components/Image/Image';
-import Error from '../../components/Error/Error';
 
 import * as action from '../../store/actions/index';
+
 
 import { generateBase64FromImage } from '../../util/image';
 
@@ -90,13 +90,12 @@ class PostImage extends Component {
   };
 
   render() {
-    const { close } = this.props;
+    const { toggleShow } = this.props;
     const { postImg } = this.state;
 
     return (
-      <Modal close={close}>
+      <Modal close={toggleShow}>
         <h2>Upload Image</h2>
-        {this.props.error ? <Error>{this.props.error}</Error> : null}
         <Form>
           <Input
             label={postImg.title.label}
@@ -140,7 +139,7 @@ class PostImage extends Component {
             onChange={this.inputChangeHandler}
           />
           <div className={classes.ButtonContainer}>
-            <Button design="cancel" onClick={close}>
+            <Button design="cancel" onClick={toggleShow}>
               Cancel
             </Button>
             <Button design="submit" onClick={this.addPostHandler} type="submit">
@@ -155,18 +154,14 @@ class PostImage extends Component {
 
 const mapStateToProps = state => {
   return {
-    token: state.auth.token,
-    error: state.post.error,
-  };
-};
+    token: state.auth.token
+  }
+}
 
 const mapDispatchToProps = dispatch => {
   return {
     onAddPost: (postData, token) => dispatch(action.addPost(postData, token)),
-  };
-};
+  }
+}
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PostImage);
+export default connect(mapStateToProps, mapDispatchToProps)(PostImage);

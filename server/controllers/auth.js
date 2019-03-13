@@ -2,8 +2,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator/check');
 
-const { errorHandler } = require('../util/error-handler');
-
 const User = require('../models/user');
 
 exports.signup = (req, res, next) => {
@@ -42,7 +40,7 @@ exports.signup = (req, res, next) => {
     })
     .catch(err => {
       console.log(err);
-      errorHandler(err, next);
+      next(err);
     });
 };
 
@@ -77,6 +75,6 @@ exports.login = (req, res, next) => {
       res.status(200).json({ token: token, userId: loadedUser._id.toString() });
     })
     .catch(err => {
-      errorHandler(err, next);
+      next(err);
     });
 };

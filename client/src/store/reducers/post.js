@@ -4,6 +4,8 @@ const initialState = {
   loading: false,
   error: null,
   post: null,
+  creator: null,
+  showPostModal: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -13,11 +15,14 @@ const reducer = (state = initialState, action) => {
         ...state,
         loading: true,
         error: null,
+        post: null,
+        creator: null,
       };
     case actionTypes.ADD_POST_SUCCESS:
       return {
         ...state,
         post: action.post,
+        creator: action.creator,
         loading: false,
         error: null,
       };
@@ -27,6 +32,13 @@ const reducer = (state = initialState, action) => {
         loading: false,
         error: action.error,
       };
+    case actionTypes.TOGGLE_POST_MODAL:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        showPostModal: !state.showPostModal
+      }
     default:
       return state;
   }

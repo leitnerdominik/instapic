@@ -20,12 +20,12 @@ const input = props => {
   // checken ob funkt
   // console.log(errorMessage)
   let errorText = null;
-  // if (errorMessage && !valid) {
-  //   inputClasses.push(classes.InvalidInput);
-  //   errorText = <span className={classes.ErrorText}>{errorMessage}</span>;
-  // } else if (valid) {
-  //   inputClasses.push(classes.ValidInput);
-  // }
+  if (errorMessage && !valid) {
+    inputClasses.push(classes.InvalidInput);
+    errorText = <span className={classes.ErrorText}>{errorMessage}</span>;
+  } else if (valid) {
+    inputClasses.push(classes.ValidInput);
+  }
 
   let field = (
     <input
@@ -57,7 +57,6 @@ const input = props => {
         value={value}
         rows="5"
         onChange={event => onChange(id, event.target.value)}
-        onBlur={onBlur ? () => onBlur(id) : null}
       />
     );
   }
