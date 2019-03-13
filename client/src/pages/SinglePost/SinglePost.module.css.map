@@ -1,0 +1,10 @@
+{
+    "version": 3,
+    "mappings": "AAEA,AAAA,OAAO,CAAC;ECYN,MAAM,EAAE,SAAS;EACjB,KAAK,EAAE,GAAG;EACV,UAAU,EAAE,MAAM;CDZnB;;AAED,AAAA,MAAM,CAAC;EACL,OAAO,EAAE,YAAY;CACtB",
+    "sources": [
+        "SinglePost.module.scss",
+        "../../styles/_util.scss"
+    ],
+    "names": [],
+    "file": "SinglePost.module.css"
+}

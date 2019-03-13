@@ -1,0 +1,9 @@
+@import '../../styles/util';
+
+.Center {
+  @include center-content;
+}
+
+.Image {
+  display: inline-block;
+}

@@ -17,7 +17,7 @@ import Login from './pages/Login/Login';
 import SignUp from './pages/SignUp/SignUp';
 import Logout from './pages/Logout/Logout';
 import * as action from './store/actions/index';
-import auth from './components/Auth/Auth';
+import SinglePost from './pages/SinglePost/SinglePost';
 
 library.add(
   faIgloo,
@@ -104,6 +104,7 @@ class App extends Component {
     return (
       <Switch>
         <Route path="/" exact component={Instapic} />
+        <Route path="/post/:postId" exact component={SinglePost} />
         <Route
           path="/login"
           exact
