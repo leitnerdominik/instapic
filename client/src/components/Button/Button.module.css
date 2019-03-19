@@ -31,7 +31,7 @@
   transition: .7s;
 }
 
-.Button:disabled {
+.Button:disabled, .Button:disabled:hover, .Button:disabled:focus {
   background: #dcdde1;
   color: white;
   cursor: not-allowed;

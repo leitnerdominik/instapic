@@ -22,17 +22,17 @@ const items = [
     auth: false,
   },
   {
-    id: 'logout',
-    text: 'logout',
-    link: '/logout',
-    icon: 'user-plus',
-    auth: true,
-  },
-  {
     id: 'profile',
     text: 'Profile',
     link: '/profile',
     icon: 'user',
+    auth: true,
+  },
+  {
+    id: 'logout',
+    text: 'logout',
+    link: '/logout',
+    icon: 'user-times',
     auth: true,
   },
 ];

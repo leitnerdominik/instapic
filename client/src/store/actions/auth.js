@@ -62,10 +62,11 @@ export const authLogin = authData => {
         dispatch(autoLogout(remainingMs));
       })
       .catch(err => {
-        console.log(err);
         let error = 'General Failure!';
         if (err.response) {
           error = err.response.data.message;
+        } else if (err.message) {
+          error = err.message;
         }
         dispatch(authFailed(error));
         toast.error(error);

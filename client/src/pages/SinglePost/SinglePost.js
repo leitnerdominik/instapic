@@ -33,7 +33,6 @@ class SinglePost extends Component {
             <Image
               containerWidth="250px"
               containerHeight="250px"
-              contain
               imgUrl={host + post.imgUrl}
             />
           </div>
