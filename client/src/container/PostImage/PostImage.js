@@ -6,9 +6,10 @@ import Input from '../../components/Input/Input';
 import Form from '../../components/Form/Form';
 import Button from '../../components/Button/Button';
 import Image from '../../components/Image/Image';
+import Spinner from '../../components/Spinner/Spinner';
 
+import { host } from '../../config.json';
 import * as action from '../../store/actions/index';
-
 
 import { generateBase64FromImage } from '../../util/image';
 
@@ -53,6 +54,33 @@ class PostImage extends Component {
     };
   }
 
+  componentWillMount() {
+    if (this.props.editPost && this.props.isEditing) {
+      const editPost = this.props.editPost;
+      console.log('EditPost: ', this.props.editPost);
+
+      this.setState(prevState => {
+        const updateForm = {
+          ...prevState.postImg,
+          title: {
+            ...prevState.postImg.title,
+            value: editPost.title,
+          },
+          image: {
+            ...prevState.postImg.image,
+            value: editPost.imgUrl,
+          },
+          description: {
+            ...prevState.postImg.description,
+            value: editPost.description,
+          },
+        };
+
+        return { postImg: updateForm, imagePreview: host + editPost.imgUrl };
+      });
+    }
+  }
+
   inputChangeHandler = (input, value, files) => {
     if (files) {
       generateBase64FromImage(files[0])
@@ -86,7 +114,16 @@ class PostImage extends Component {
       imgUrl: postImg.image.value,
       description: postImg.description.value,
     };
-    this.props.onAddPost(postData, this.props.token);
+    if (this.props.isEditing) {
+      const editPostData = {
+        ...postData,
+        _id: this.props.editPost._id,
+      };
+      console.log(editPostData);
+      this.props.onEditPost(editPostData, this.props.token);
+    } else {
+      this.props.onAddPost(postData, this.props.token);
+    }
   };
 
   render() {
@@ -142,9 +179,17 @@ class PostImage extends Component {
             <Button design="cancel" onClick={toggleShow}>
               Cancel
             </Button>
-            <Button design="submit" onClick={this.addPostHandler} type="submit">
-              Save
-            </Button>
+            {this.props.loading ? (
+              <Spinner />
+            ) : (
+              <Button
+                design="submit"
+                onClick={this.addPostHandler}
+                type="submit"
+              >
+                Save
+              </Button>
+            )}
           </div>
         </Form>
       </Modal>
@@ -154,14 +199,21 @@ class PostImage extends Component {
 
 const mapStateToProps = state => {
   return {
-    token: state.auth.token
-  }
-}
+    token: state.auth.token,
+    editPost: state.post.editPost,
+    isEditing: state.post.isEditing,
+    loading: state.post.loading,
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     onAddPost: (postData, token) => dispatch(action.addPost(postData, token)),
-  }
-}
+    onEditPost: (postData, token) => dispatch(action.editPost(postData, token)),
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostImage);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PostImage);

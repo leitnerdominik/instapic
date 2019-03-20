@@ -6,9 +6,11 @@ import Navbar from '../../components/Navigation/Navbar/Navbar';
 import classes from './Layout.module.css';
 
 class Layout extends Component {
-  // constructor(props) {
-  //   super(props);
-  // }
+ 
+  state = {
+    showLogin: false,
+    showSignUp: false,
+  }
 
   render() {
     const { isAuth, children } = this.props;

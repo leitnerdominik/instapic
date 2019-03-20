@@ -45,9 +45,7 @@ class Instapic extends Component {
           pauseOnHover
         />
         {this.props.showPostModal ? (
-          <PostImage
-            toggleShow={this.props.onShowPostImage}
-          />
+          <PostImage toggleShow={this.props.onShowPostImage} />
         ) : null}
         <Layout>
           {this.props.isAuth && (
@@ -64,7 +62,15 @@ class Instapic extends Component {
             <p className={classes.Center}>No posts found!</p>
           ) : null}
           {this.props.posts.length > 0 && !this.props.loadingPosts ? (
-            <ImageList images={this.props.posts} />
+            <ImageList
+              images={this.props.posts}
+              deletePost={postId =>
+                this.props.onDeletePost(postId, this.props.token)
+              }
+              editPost={postId =>
+                this.props.onSearchEditPost(postId, this.props.posts)
+              }
+            />
           ) : null}
         </Layout>
       </Fragment>
@@ -75,6 +81,7 @@ class Instapic extends Component {
 const mapStateToProps = state => {
   return {
     isAuth: state.auth.isAuth,
+    token: state.auth.token,
     posts: state.posts.posts,
     loadingPosts: state.posts.loading,
     addPostError: state.post.error,
@@ -86,7 +93,9 @@ const mapDispatchToProps = dispatch => {
   return {
     onFetchPosts: () => dispatch(action.fetchPosts()),
     onShowPostImage: () => dispatch(action.togglePostModal()),
-    
+    onSearchEditPost: (postId, posts) =>
+      dispatch(action.searchEditPost(postId, posts)),
+    onDeletePost: (postId, token) => dispatch(action.deletePost(postId, token)),
   };
 };
 

@@ -1,4 +1,4 @@
-.Auth {
+.Center {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,6 +6,17 @@
   width: 100%;
   max-width: 500px; 
   margin: 50px auto;
-  padding: 2rem;
   background: white;
+}
+
+.Auth {
+  display: grid;
+  grid-template-columns: 20% 80%;
+  width: 100%;
+}
+
+.Image {
+  background-image: url('../../images/lemon.jpg');
+  height: 100%;
+  width: 100%;
 }

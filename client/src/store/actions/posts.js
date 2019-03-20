@@ -1,8 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axiosUtil from '../../util/axios-util';
 
-import { host } from '../../config.json';
-
 const fetchPostsStart = () => {
   return {
     type: actionTypes.FETCH_POSTS_START,
@@ -31,7 +29,7 @@ export const fetchPosts = () => {
       .then(response => {
         const posts = response.data.map(post => ({
           ...post,
-          imgUrl: host + post.imgUrl,
+          imgUrl: post.imgUrl,
         }));
         dispatch(fetchPostsSuccess(posts));
       })
