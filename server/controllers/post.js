@@ -1,5 +1,6 @@
 const Post = require('../models/post');
 const User = require('../models/user');
+const { validationResult } = require('express-validator/check');
 
 exports.getPosts = (req, res, next) => {
   Post.find()
@@ -35,17 +36,27 @@ exports.getPost = (req, res, next) => {
 };
 
 exports.createPost = (req, res, next) => {
+  
+  const errors = validationResult(req);
+  if(!errors.isEmpty()) {
+    const error = new Error('Invalid Input!');
+    error.statusCode = 422;
+    error.data = errors.array();
+    throw error;
+  }
+  
+  if(!req.file) {
+    const error = new Error('Image not found!');
+    error.statusCoe = 422;
+    throw error;
+  }
+
   const title = req.body.title;
   const imgUrl = req.file.path;
   const description = req.body.description;
   let creator;
-  // res.json({
-  //   message: 'Post created!',
-  //   title: title,
-  //   imgUrl: imgUrl,
-  //   description: description,
-  //   creator: req.userId,
-  // });
+
+
   const post = new Post({
     title,
     description,
