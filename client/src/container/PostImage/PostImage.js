@@ -132,6 +132,7 @@ class PostImage extends Component {
 
     return (
       <Modal close={toggleShow}>
+      <div className={classes.PostImage}>
         <h2>Upload Image</h2>
         <Form>
           <Input
@@ -192,6 +193,7 @@ class PostImage extends Component {
             )}
           </div>
         </Form>
+        </div>
       </Modal>
     );
   }

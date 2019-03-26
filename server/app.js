@@ -7,6 +7,7 @@ const multer = require('multer');
 
 const postRoutes = require('./routes/post');
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
 
 const MONGODB_URI =
   'mongodb+srv://dominik:TbUzGgf4LLRi06IE@cluster0-dzuqr.mongodb.net/instapic';
@@ -52,6 +53,7 @@ app.use((req, res, next) => {
 
 app.use('/post', postRoutes);
 app.use('/auth', authRoutes);
+app.use('/user', userRoutes);
 
 app.use((error, req, res, next) => {
   console.log("error", error);

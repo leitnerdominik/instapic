@@ -53,6 +53,18 @@ const reducer = (state = initialState, action) => {
         isEditing: true,
         showPostModal: true,
       }
+    case actionTypes.DELETE_POST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+      }
+    case actionTypes.DELETE_POST_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.error
+      }
     default:
       return state;
   }

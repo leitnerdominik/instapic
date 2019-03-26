@@ -1,0 +1,35 @@
+@import '../../styles/util';
+
+.ErrorModal {
+  display: grid;
+  place-items: center center;
+  padding: 32px;
+  position: relative;
+  width: 250px;
+  
+  p {
+    margin: 50px 0;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+
+.SubTitle {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  text-align: center;
+  padding: 5px;
+  font-weight: bold;
+  color: $dark-red;
+  background: $light-red;
+  padding: 10px 0;
+
+  span {
+    margin: 0 10px;
+    font-size: 1.5rem;
+  }
+}

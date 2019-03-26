@@ -20,7 +20,7 @@ class SinglePost extends Component {
   render() {
     const { post, creator } = this.props;
 
-    let content;
+    let content = <Spinner />
     if (post && creator) {
       content = (
         <section>
@@ -39,9 +39,8 @@ class SinglePost extends Component {
           <p>{post.description}</p>
         </section>
       );
-    } else {
-      content = <Spinner />;
     }
+    
     return (
       <Layout>
         <div className={classes.Center}>{content}</div>

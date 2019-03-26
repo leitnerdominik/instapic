@@ -9,6 +9,7 @@ import Layout from '../../container/Layout/Layout';
 import ImageList from '../../components/ImageList/ImageList';
 import PostImage from '../../container/PostImage/PostImage';
 import Spinner from '../../components/Spinner/Spinner';
+import ErrorModal from '../../components/ErrorModal/ErrorModal';
 
 import * as action from '../../store/actions/index';
 
@@ -33,6 +34,7 @@ class Instapic extends Component {
   render() {
     return (
       <Fragment>
+        {this.props.postsError ? <ErrorModal close={this.props.onPostsReset} error={this.props.postsError} /> : null}
         <ToastContainer
           position="top-center"
           autoClose={5000}
@@ -83,6 +85,7 @@ const mapStateToProps = state => {
     isAuth: state.auth.isAuth,
     token: state.auth.token,
     posts: state.posts.posts,
+    postsError: state.posts.error,
     loadingPosts: state.posts.loading,
     addPostError: state.post.error,
     showPostModal: state.post.showPostModal,
@@ -96,6 +99,7 @@ const mapDispatchToProps = dispatch => {
     onSearchEditPost: (postId, posts) =>
       dispatch(action.searchEditPost(postId, posts)),
     onDeletePost: (postId, token) => dispatch(action.deletePost(postId, token)),
+    onPostsReset: () => dispatch(action.postsReset()),
   };
 };
 

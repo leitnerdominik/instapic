@@ -21,6 +21,12 @@ const fetchPostsFail = error => {
   };
 };
 
+export const postsReset = () => {
+  return {
+    type: actionTypes.POSTS_RESET,
+  }
+}
+
 export const fetchPosts = () => {
   return dispatch => {
     dispatch(fetchPostsStart());
@@ -34,8 +40,8 @@ export const fetchPosts = () => {
         dispatch(fetchPostsSuccess(posts));
       })
       .catch(error => {
-        console.log(error);
-        dispatch(fetchPostsFail(error));
+        console.log(error.message);
+        dispatch(fetchPostsFail(error.message));
       });
   };
 };

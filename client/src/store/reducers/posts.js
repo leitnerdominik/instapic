@@ -27,6 +27,12 @@ const reducer = (state = initialState, action) => {
         error: action.error,
         loading: false,
       }
+    case actionTypes.POSTS_RESET:
+      return {
+        ...state,
+        error: null,
+        loading: null,
+      }
     default:
       return state;
   }

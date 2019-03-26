@@ -1,0 +1,15 @@
+.ProfilePost {
+  list-style-type: none;
+  border: 4px double rgba(0, 0, 0, 0.5);
+  padding: 8px 16px;
+  margin: 5px 10px;
+}
+
+.ProfilePost span {
+  color: black;
+}
+
+.ProfilePost a {
+  text-decoration: none;
+}
+/*# sourceMappingURL=ProfilePost.module.css.map */

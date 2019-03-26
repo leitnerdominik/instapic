@@ -109,7 +109,24 @@ export const editPost = (postData, token) => {
       })
       .catch(error => {
         toast.error(error.response.data.message);
+        dispatch(addPostFail(error.response.data.message))
       });
+  };
+};
+
+// TODO DELETEPOSTSUCCESS um loading zu resetten, sonst laedt er nach einem deletePost -> Postedit ewig
+// DELETEPOSTFAIL um evtl. Fehlermeldung anzuzeigen
+
+const deletePostSuccess = () => {
+  return {
+    type: actionTypes.DELETE_POST_SUCCESS,
+  };
+};
+
+const deletePostFail = error => {
+  return {
+    type: actionTypes.DELETE_POST_FAIL,
+    error: error
   };
 };
 
@@ -124,12 +141,14 @@ export const deletePost = (postId, token) => {
     axiosUtil
       .delete(`post/${postId}`, config)
       .then(response => {
-        console.log(response);
         toast.success('Post deleted!');
+        dispatch(deletePostSuccess());
         dispatch(fetchPosts());
       })
       .catch(error => {
         console.log(error);
+        dispatch(deletePostFail(error));
+        toast.error(error.response.statusText);
       });
   };
 };

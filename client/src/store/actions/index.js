@@ -1,5 +1,5 @@
 export { authLogin, authSignUp, logout, checkAuthState } from './auth';
-export { fetchPosts } from './posts';
+export { fetchPosts, postsReset } from './posts';
 export {
   addPost,
   getPost,
@@ -8,3 +8,4 @@ export {
   editPost,
   deletePost,
 } from './post';
+export { fetchProfile, setStatus } from './user';

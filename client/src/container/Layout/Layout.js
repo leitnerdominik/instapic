@@ -7,10 +7,10 @@ import classes from './Layout.module.css';
 
 class Layout extends Component {
  
-  state = {
-    showLogin: false,
-    showSignUp: false,
-  }
+  // state = {
+  //   showLogin: false,
+  //   showSignUp: false,
+  // }
 
   render() {
     const { isAuth, children } = this.props;

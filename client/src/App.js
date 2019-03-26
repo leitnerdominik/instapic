@@ -19,7 +19,6 @@ import SignUp from './pages/SignUp/SignUp';
 import Logout from './pages/Logout/Logout';
 import SinglePost from './pages/SinglePost/SinglePost';
 import Profile from './pages/Profile/Profile';
-import Modal from './components/Modal/Modal';
 import * as action from './store/actions/index';
 
 library.add(
@@ -33,15 +32,7 @@ library.add(
 );
 
 class App extends Component {
-  // state = {
-  //   isAuth: false,
-  //   token: null,
-  //   userId: null,
-  //   authLoading: false,
-  //   error: null,
-  // };
-
-  componentDidMount() {
+  componentWillMount() {
     this.props.onCheckAuthState();
   }
 

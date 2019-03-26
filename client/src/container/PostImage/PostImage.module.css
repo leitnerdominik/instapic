@@ -1,3 +1,7 @@
+.PostImage {
+  padding: 32px;
+}
+
 .ButtonContainer {
   display: -webkit-box;
   display: -ms-flexbox;
