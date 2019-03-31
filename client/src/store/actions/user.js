@@ -13,35 +13,33 @@ const fetchProfileStart = () => {
 const fetchProfileSuccess = (user, posts) => {
   return {
     type: actionTypes.FETCH_PROFILE_SUCCESS,
-    user: user,
-    posts: posts,
+    name: user.name,
+    email: user.email,
+    status: user.status,
+    posts,
   };
 };
 
-const fetchProfileFail = error => {
-  return {
-    type: actionTypes.FETCH_PROFILE_FAIL,
-    error: error,
-  };
-};
+const fetchProfileFail = error => ({
+  type: actionTypes.FETCH_PROFILE_FAIL,
+  error,
+});
 
-export const fetchProfile = token => {
-  return dispatch => {
-    dispatch(fetchProfileStart());
-    axiosUtil
-      .get('user/profile', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(response => {
-        dispatch(fetchProfileSuccess(response.data.user, response.data.posts));
-      })
-      .catch(error => {
-        console.log(error);
-        dispatch(fetchProfileFail(error.message));
-      });
-  };
+export const fetchProfile = token => dispatch => {
+  dispatch(fetchProfileStart());
+  axiosUtil
+    .get('user/profile', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then(response => {
+      dispatch(fetchProfileSuccess(response.data.user, response.data.posts));
+    })
+    .catch(error => {
+      console.log(error);
+      dispatch(fetchProfileFail(error.message));
+    });
 };
 
 const setStatusStart = () => {
@@ -50,31 +48,41 @@ const setStatusStart = () => {
   };
 };
 
-const setStatusSuccess = () => {
+const setStatusSuccess = status => {
   return {
     type: actionTypes.SET_STATUS_SUCCESS,
+    status,
   };
 };
 
 const setStatusFail = error => {
   return {
     type: actionTypes.SET_STATUS_FAIL,
-    error: error,
+    error,
+  };
+};
+
+export const userLogout = () => {
+  return {
+    type: actionTypes.USER_LOGOUT,
   };
 };
 
 export const setStatus = (status, token) => {
   return dispatch => {
     dispatch(setStatusStart());
+    const data = {
+      status,
+    };
     const config = {
       headers: {
-        Authorization: 'Bearer ' + token,
+        Authorization: `Bearer ${token}`,
       },
     };
     axiosUtil
-      .put('user/status', status, config)
+      .put('user/status', data, config)
       .then(response => {
-        dispatch(setStatusSuccess());
+        dispatch(setStatusSuccess(status));
         toast.success(response.data.message);
       })
       .catch(error => {

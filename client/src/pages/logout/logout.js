@@ -7,37 +7,43 @@ import * as actions from '../../store/actions/index';
 
 class Logout extends Component {
   componentDidMount() {
-    this.props.onLogout();
+    const { onLogout, onUserLogout } = this.props;
+    onLogout();
+    onUserLogout();
   }
 
   render() {
-
-    if (!this.props.isAuth) {
+    const { isAuth, history } = this.props;
+    if (!isAuth) {
       setTimeout(() => {
-        this.props.history.replace('/');
-      }, 3000)
+        history.replace('/');
+      }, 3000);
     }
 
     return (
       <Layout>
         <Modal>
-          <div>Logged out. <br/> You will be redirected...</div>
+          <div>
+            Logged out.
+            <br />
+            You will be redirected...
+          </div>
         </Modal>
       </Layout>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    isAuth: state.auth.isAuth
-  }
-}
+const mapStateToProps = state => ({
+  isAuth: state.auth.isAuth,
+});
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onLogout: () => dispatch(actions.logout())
-  }
-}
+const mapDispatchToProps = dispatch => ({
+  onLogout: () => dispatch(actions.logout()),
+  onUserLogout: () => dispatch(actions.userLogout()),
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Logout);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Logout);

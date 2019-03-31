@@ -31,7 +31,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         loading: false,
         error: null,
-      }
+      };
     case actionTypes.AUTH_FAILED:
       return {
         ...state,
@@ -44,7 +44,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         isAuth: false,
         loading: false,
-      }
+      };
     default:
       return state;
   }

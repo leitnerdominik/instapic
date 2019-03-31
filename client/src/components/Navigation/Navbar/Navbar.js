@@ -31,17 +31,14 @@ const items = [
   {
     id: 'logout',
     text: 'logout',
-    link: '/logout',
     icon: 'user-times',
     auth: true,
   },
 ];
 
-const navbar = ({ isAuth }) => {
+const navbar = ({ isAuth, clicked }) => {
   const navItems = items.filter(item => {
-    if (isAuth && item.auth) {
-      return true;
-    } else if (!isAuth && !item.auth) {
+    if ((isAuth && item.auth) || (!isAuth && !item.auth)) {
       return true;
     }
     return false;
@@ -53,7 +50,7 @@ const navbar = ({ isAuth }) => {
           <Logo />
         </NavLink>
       </div>
-      <Navigationitems navItems={navItems} />
+      <Navigationitems clicked={clicked} navItems={navItems} />
     </div>
   );
 };

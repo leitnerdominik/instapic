@@ -17,4 +17,9 @@
 .NavItems li a span {
   margin: 0 5px;
 }
+
+.NavItems li span {
+  margin: 0 5px;
+  cursor: pointer;
+}
 /*# sourceMappingURL=NavigationItems.module.css.map */

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -16,13 +16,24 @@ import * as action from '../../store/actions/index';
 import classes from './Instapic.module.css';
 
 class Instapic extends Component {
-  state = {
-    posts: [],
-    showPostImage: false,
-  };
-
   componentDidMount() {
-    this.props.onFetchPosts();
+    const { onFetchPosts, onFetchProfile, isAuth, token } = this.props;
+    onFetchPosts();
+
+    if (isAuth && token) {
+      onFetchProfile(token);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { isAuth, onFetchProfile, token } = this.props;
+    if (isAuth && isAuth !== prevProps.isAuth) {
+      onFetchProfile(token);
+    }
+  }
+
+  sharePostMessage = () => {
+    toast.info(`Post link copied! :)`);
   }
 
   togglePostImage = () => {
@@ -32,9 +43,37 @@ class Instapic extends Component {
   };
 
   render() {
+    const {
+      isAuth,
+      token,
+      profileStatus,
+      postsError,
+      onPostsReset,
+      showPostModal,
+      onShowPostImage,
+      loadingPosts,
+      posts,
+      onDeletePost,
+      onSearchEditPost,
+      onLikePost,
+    } = this.props;
+
+    let status = null;
+    if (isAuth && profileStatus) {
+      status = (
+        <span className={classes.Status}>
+          {'Status: '}
+          <br />
+          {profileStatus}
+        </span>
+      );
+    }
+
     return (
       <Fragment>
-        {this.props.postsError ? <ErrorModal close={this.props.onPostsReset} error={this.props.postsError} /> : null}
+        {postsError ? (
+          <ErrorModal close={onPostsReset} error={postsError} />
+        ) : null}
         <ToastContainer
           position="top-center"
           autoClose={5000}
@@ -46,32 +85,32 @@ class Instapic extends Component {
           draggable
           pauseOnHover
         />
-        {this.props.showPostModal ? (
-          <PostImage toggleShow={this.props.onShowPostImage} />
-        ) : null}
+        {showPostModal ? <PostImage toggleShow={onShowPostImage} /> : null}
         <Layout>
-          {this.props.isAuth && (
+          {isAuth && (
             <div className={classes.Options}>
-              <Button onClick={this.props.onShowPostImage}>Upload Image</Button>
+              {status}
+              <Button onClick={onShowPostImage}>Upload Image</Button>
             </div>
           )}
-          {this.props.loadingPosts && (
+          {loadingPosts && (
             <div className={classes.Center}>
               <Spinner />
             </div>
           )}
-          {this.props.posts.length <= 0 && !this.props.loadingPosts ? (
+          {posts.length <= 0 && !loadingPosts ? (
             <p className={classes.Center}>No posts found!</p>
           ) : null}
-          {this.props.posts.length > 0 && !this.props.loadingPosts ? (
+          {posts.length > 0 && !loadingPosts ? (
             <ImageList
-              images={this.props.posts}
-              deletePost={postId =>
-                this.props.onDeletePost(postId, this.props.token)
-              }
-              editPost={postId =>
-                this.props.onSearchEditPost(postId, this.props.posts)
-              }
+              images={posts}
+              deletePost={postId => onDeletePost(postId, token)}
+              editPost={postId => onSearchEditPost(postId, posts)}
+              likePost={(event, postId) => {
+                event.preventDefault();
+                onLikePost(postId, token);
+              }}
+              sharePost={this.sharePostMessage}
             />
           ) : null}
         </Layout>
@@ -80,30 +119,29 @@ class Instapic extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    isAuth: state.auth.isAuth,
-    token: state.auth.token,
-    posts: state.posts.posts,
-    postsError: state.posts.error,
-    loadingPosts: state.posts.loading,
-    addPostError: state.post.error,
-    showPostModal: state.post.showPostModal,
-  };
-};
+const mapStateToProps = state => ({
+  profileStatus: state.user.status,
+  isAuth: state.auth.isAuth,
+  token: state.auth.token,
+  posts: state.posts.posts,
+  postsError: state.posts.error,
+  loadingPosts: state.posts.loading,
+  addPostError: state.post.error,
+  showPostModal: state.post.showPostModal,
+});
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onFetchPosts: () => dispatch(action.fetchPosts()),
-    onShowPostImage: () => dispatch(action.togglePostModal()),
-    onSearchEditPost: (postId, posts) =>
-      dispatch(action.searchEditPost(postId, posts)),
-    onDeletePost: (postId, token) => dispatch(action.deletePost(postId, token)),
-    onPostsReset: () => dispatch(action.postsReset()),
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  onFetchPosts: () => dispatch(action.fetchPosts()),
+  onShowPostImage: () => dispatch(action.togglePostModal()),
+  onSearchEditPost: (postId, posts) =>
+    dispatch(action.searchEditPost(postId, posts)),
+  onDeletePost: (postId, token) => dispatch(action.deletePost(postId, token)),
+  onPostsReset: () => dispatch(action.postsReset()),
+  onFetchProfile: token => dispatch(action.fetchProfile(token)),
+  onLikePost: (postId, token) => dispatch(action.likePost(postId, token)),
+});
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Instapic);

@@ -16,12 +16,21 @@
 
   display: flex;
   flex-direction: column;
-  // justify-content: center;
+  justify-content: space-between;
   align-items: center;
 
   p {
     width: 250px;
     text-align: center;
+    margin: 0;
+    height: 80px;
+  }
+}
+
+.Options {
+  button:hover {
+    transition: ease-out 0.5s;
+    transform: scale(1.1);
   }
 }
 
@@ -33,14 +42,27 @@
   margin: 20px;
 }
 
+.OptionsContainer {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr;
+  grid-gap: 10px;
+  grid-template-rows: 40px 40px;
+
+}
+
+.Title {
+  text-decoration: none;
+  color: black;
+}
+
 .ButtonContainer {
-  position: absolute;
-  box-sizing: border-box;
-  bottom: 0;
-  right: 0;
-  padding: 20px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
+}
+
+.Likes {
+  font-size: 2rem;
 }

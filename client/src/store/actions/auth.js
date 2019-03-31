@@ -1,6 +1,10 @@
+import { toast } from 'react-toastify';
+
 import * as actionTypes from './actionTypes';
 import axiosUtil from '../../util/axios-util';
-import { toast } from 'react-toastify';
+
+import * as actions from './index';
+import { userLogout } from './user';
 
 const authStart = () => {
   return {
@@ -12,7 +16,7 @@ const authLoginSuccess = (token, userId) => {
   return {
     type: actionTypes.AUTH_LOGIN_SUCCESS,
     idToken: token,
-    userId: userId,
+    userId,
   };
 };
 
@@ -25,7 +29,7 @@ const authSignupSuccess = () => {
 const authFailed = error => {
   return {
     type: actionTypes.AUTH_FAILED,
-    error: error,
+    error,
   };
 };
 
@@ -42,6 +46,7 @@ const autoLogout = remainingTime => {
   return dispatch => {
     setTimeout(() => {
       dispatch(logout());
+      dispatch(actions.userLogout());
     }, remainingTime);
   };
 };
@@ -105,10 +110,12 @@ export const checkAuthState = () => {
     const token = localStorage.getItem('token');
     if (!token) {
       dispatch(logout());
+      dispatch(actions.userLogout());
     } else {
       const expirationDate = new Date(localStorage.getItem('expiryDate'));
       if (new Date() >= expirationDate) {
         dispatch(logout());
+        dispatch(actions.userLogout());
       } else {
         const userId = localStorage.getItem('userId');
         dispatch(authLoginSuccess(token, userId));

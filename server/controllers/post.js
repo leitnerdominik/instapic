@@ -44,16 +44,15 @@ exports.getPost = (req, res, next) => {
 };
 
 exports.createPost = (req, res, next) => {
-  
   const errors = validationResult(req);
-  if(!errors.isEmpty()) {
+  if (!errors.isEmpty()) {
     const error = new Error('Invalid Input!');
     error.statusCode = 422;
     error.data = errors.array();
     throw error;
   }
-  
-  if(!req.file) {
+
+  if (!req.file) {
     const error = new Error('Image not found!');
     error.statusCoe = 422;
     throw error;
@@ -63,7 +62,6 @@ exports.createPost = (req, res, next) => {
   const imgUrl = req.file.path;
   const description = req.body.description;
   let creator;
-
 
   const post = new Post({
     title,
@@ -162,6 +160,52 @@ exports.deletePost = (req, res, next) => {
     })
     .then(result => {
       res.status(200).json({ message: 'Post deleted!' });
+    })
+    .catch(error => {
+      next(error);
+    });
+};
+
+exports.toggleLikePost = (req, res, next) => {
+  let currentUser = null;
+  const postId = req.params.postId;
+
+  User.findById(req.userId)
+    .then(user => {
+      if (!user) {
+        const error = new Error('User not found!');
+        error.statusCode = 422;
+        throw error;
+      }
+
+      currentUser = user;
+
+      return Post.findById(postId);
+    })
+    .then(post => {
+      if (!post) {
+        const error = new Error('Post not found!');
+        error.statusCOde = 422;
+        throw error;
+      }
+
+      console.log(post.likedUser, currentUser._id);
+      
+
+      const LikedUserIndex = post.likedUser.indexOf(currentUser._id);
+      console.log(LikedUserIndex)
+      if (LikedUserIndex === -1) {
+        post.likedUser.push(currentUser);
+        post.likes += 1;
+      } else {
+        post.likedUser.splice(LikedUserIndex, 1);
+        post.likes -= 1;
+      }
+
+      return post.save();
+    })
+    .then(response => {
+      res.status(201).json({ message: 'Post liked successfully!' });
     })
     .catch(error => {
       next(error);

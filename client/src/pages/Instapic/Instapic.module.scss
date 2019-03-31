@@ -1,11 +1,27 @@
 .Options {
   margin: 30px;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
+  // display: flex;
+  // flex-direction: row;
+  // justify-content: space-around;
+  text-align: center;
+  position: relative;
+  line-height: 40px;
+
+  button {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 }
 
 .Center {
   text-align: center;
   margin-top: 2rem;
+}
+
+.Status {
+  font-size: 1.3em;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 1px;
 }

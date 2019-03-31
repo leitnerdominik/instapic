@@ -15,44 +15,70 @@ import classes from './Profile.module.css';
 import * as action from '../../store/actions/index';
 
 class Profile extends Component {
-  state = {
-    status: {
-      value: '',
-    },
-  };
+  constructor(props) {
+    super(props);
+
+    const { profileStatus } = this.props;
+
+    this.state = {
+      status: {
+        value: profileStatus || '',
+      },
+    };
+  }
 
   componentDidMount() {
-    const { token } = this.props;
+    const { token, onFetchProfile } = this.props;
     if (token) {
-      this.props.onFetchProfile(token);
+      onFetchProfile(token);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { token, onFetchProfile } = this.props;
+    if (token !== prevProps.token) {
+      onFetchProfile(token);
     }
   }
 
   statusChangeHandler = (id, value) => {
     this.setState({
       status: {
-        value: value,
+        value,
       },
     });
   };
 
   setStatusHandler = () => {
-    const status = { status: this.state.status.value };
-    const token = this.props.token;
-    this.props.onSetStatus(status, token);
+    const { status } = this.state;
+    const { token, onSetStatus } = this.props;
+    onSetStatus(status.value, token);
   };
 
-  componentDidUpdate(prevProps) {
-    const { token } = this.props;
-    if (token !== prevProps.token) {
-      this.props.onFetchProfile(token);
-    }
-  }
-
   render() {
-    let content = <Spinner />;
+    const {
+      profileName,
+      profileEmail,
+      profilePosts,
+      loadingProfile,
+      loadingStatus,
+    } = this.props;
+    const { status } = this.state;
 
-    if (this.props.profile && this.props.profilePosts) {
+    // let content = <Spinner />; // TODO Spinner wirklich nur anzeigen, wenn etwas am laden ist!
+
+    let content = null;
+    let statusButton = null;
+
+    if (loadingStatus) {
+      statusButton = <Spinner />;
+    } else {
+      statusButton = <Button onClick={this.setStatusHandler}>Save</Button>;
+    }
+
+    if (loadingProfile) {
+      content = <Spinner />;
+    } else if (profileName && profileEmail) {
       content = (
         <Fragment>
           <ToastContainer
@@ -69,31 +95,28 @@ class Profile extends Component {
           <h2>Profile</h2>
           <p className={classes.ProfileTitle}>
             Name
-            <span className={classes.ProfileData}>
-              {this.props.profile.name}
-            </span>
+            <span className={classes.ProfileData}>{profileName}</span>
           </p>
 
           <p className={classes.ProfileTitle}>
             E-Mail
-            <span className={classes.ProfileData}>
-              {this.props.profile.email}
-            </span>
+            <span className={classes.ProfileData}>{profileEmail}</span>
           </p>
 
           <Input
             label="Set your status"
-            value={this.state.status.value}
+            value={status.value}
             id="status"
             type="text"
             control="input"
-            onChange={this.statusChangeHandler.bind(this)}
+            onChange={this.statusChangeHandler}
+            // ich hab bind geloescht!! this.statusChangeHandler.bind(this)
           />
-          <Button onClick={this.setStatusHandler.bind(this)}>Save</Button>
+          {statusButton}
 
           <h3>Your Posts</h3>
-          {this.props.profilePosts.length > 0 ? (
-            <ProfilePosts posts={this.props.profilePosts} />
+          {profilePosts.length > 0 ? (
+            <ProfilePosts posts={profilePosts} />
           ) : (
             <p>No Posts found!</p>
           )}
@@ -109,22 +132,22 @@ class Profile extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    token: state.auth.token,
-    profile: state.user.user,
-    profilePosts: state.user.posts,
-  };
-};
+const mapStateToProps = state => ({
+  token: state.auth.token,
+  profileName: state.user.name,
+  profileEmail: state.user.email,
+  profileStatus: state.user.status,
+  profilePosts: state.user.posts,
+  loadingProfile: state.user.loadingProfile,
+  loadingStatus: state.user.loadingStatus,
+});
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onSetStatus: (status, token) => dispatch(action.setStatus(status, token)),
-    onFetchProfile: token => dispatch(action.fetchProfile(token)),
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  onSetStatus: (status, token) => dispatch(action.setStatus(status, token)),
+  onFetchProfile: token => dispatch(action.fetchProfile(token)),
+});
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Profile);

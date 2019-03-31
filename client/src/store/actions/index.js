@@ -7,5 +7,6 @@ export {
   searchEditPost,
   editPost,
   deletePost,
+  likePost,
 } from './post';
-export { fetchProfile, setStatus } from './user';
+export { fetchProfile, setStatus, userLogout } from './user';

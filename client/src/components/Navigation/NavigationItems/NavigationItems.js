@@ -3,13 +3,14 @@ import React, { Fragment } from 'react';
 import NavigationItem from './NavigationItem/NavigationItem';
 import classes from './NavigationItems.module.css';
 
-const navigationItems = ({ navItems }) => {
+const navigationItems = ({ navItems, clicked }) => {
   const navs = navItems.map(navItem => (
     <NavigationItem
       key={navItem.id}
       text={navItem.text}
       link={navItem.link}
       icon={navItem.icon}
+      clicked={clicked}
     />
   ));
   return (

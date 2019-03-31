@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import { far } from '@fortawesome/free-regular-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faIgloo,
@@ -9,8 +10,8 @@ import {
   faUserPlus,
   faUser,
   faExclamationTriangle,
-  faHeart,
   faUserTimes,
+  faShareAlt,
 } from '@fortawesome/free-solid-svg-icons';
 
 import Instapic from './pages/Instapic/Instapic';
@@ -27,23 +28,28 @@ library.add(
   faUserPlus,
   faUser,
   faExclamationTriangle,
-  faHeart,
-  faUserTimes
+  faUserTimes,
+  faShareAlt,
+  far,
 );
 
 class App extends Component {
   componentWillMount() {
-    this.props.onCheckAuthState();
+    const { onCheckAuthState } = this.props;
+    onCheckAuthState();
   }
 
   signupHandler = (event, authData) => {
     event.preventDefault();
-    this.props.onAuthSignUp(authData);
+
+    const { onAuthSignUp } = this.props;
+    onAuthSignUp(authData);
   };
 
   loginHandler = (event, authData) => {
     event.preventDefault();
-    this.props.onAuthLogin(authData);
+    const { onAuthLogin } = this.props;
+    onAuthLogin(authData);
   };
 
   // logoutHandler = () => {
@@ -60,6 +66,7 @@ class App extends Component {
   // };
 
   render() {
+    const { loading, error } = this.props;
     return (
       <Switch>
         <Route path="/" exact component={Instapic} />
@@ -67,11 +74,11 @@ class App extends Component {
         <Route
           path="/login"
           exact
-          render={props => (
+          render={() => (
             <Login
               onLogin={this.loginHandler}
-              loading={this.props.loading}
-              error={this.props.error}
+              loading={loading}
+              error={error}
             />
           )}
         />
@@ -82,8 +89,8 @@ class App extends Component {
             <SignUp
               {...props}
               onSignUp={this.signupHandler}
-              loading={this.props.loading}
-              error={this.props.error}
+              loading={loading}
+              error={error}
             />
           )}
         />
@@ -94,24 +101,20 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    error: state.auth.error,
-    loading: state.auth.loading,
-  };
-};
+const mapStateToProps = state => ({
+  error: state.auth.error,
+  loading: state.auth.loading,
+});
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onAuthLogin: authData => dispatch(action.authLogin(authData)),
-    onAuthSignUp: authData => dispatch(action.authSignUp(authData)),
-    onCheckAuthState: () => dispatch(action.checkAuthState()),
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  onAuthLogin: authData => dispatch(action.authLogin(authData)),
+  onAuthSignUp: authData => dispatch(action.authSignUp(authData)),
+  onCheckAuthState: () => dispatch(action.checkAuthState()),
+});
 
 export default withRouter(
   connect(
     mapStateToProps,
-    mapDispatchToProps
-  )(App)
+    mapDispatchToProps,
+  )(App),
 );
