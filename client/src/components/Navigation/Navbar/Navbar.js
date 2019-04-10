@@ -15,13 +15,6 @@ const items = [
     auth: false,
   },
   {
-    id: 'signup',
-    text: 'Sign Up',
-    link: '/signup',
-    icon: 'user-plus',
-    auth: false,
-  },
-  {
     id: 'profile',
     text: 'Profile',
     link: '/profile',

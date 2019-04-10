@@ -11,13 +11,12 @@ import {
   faUser,
   faExclamationTriangle,
   faUserTimes,
-  faShareAlt,
+  faCopy,
 } from '@fortawesome/free-solid-svg-icons';
 
 import Instapic from './pages/Instapic/Instapic';
 import Login from './pages/Login/Login';
 import SignUp from './pages/SignUp/SignUp';
-import Logout from './pages/Logout/Logout';
 import SinglePost from './pages/SinglePost/SinglePost';
 import Profile from './pages/Profile/Profile';
 import * as action from './store/actions/index';
@@ -29,7 +28,7 @@ library.add(
   faUser,
   faExclamationTriangle,
   faUserTimes,
-  faShareAlt,
+  faCopy,
   far,
 );
 
@@ -66,7 +65,7 @@ class App extends Component {
   // };
 
   render() {
-    const { loading, error } = this.props;
+    const { loginLoading, loginError, signUpLoading, signUpError } = this.props;
     return (
       <Switch>
         <Route path="/" exact component={Instapic} />
@@ -77,8 +76,8 @@ class App extends Component {
           render={() => (
             <Login
               onLogin={this.loginHandler}
-              loading={loading}
-              error={error}
+              loading={loginLoading}
+              error={loginError}
             />
           )}
         />
@@ -89,21 +88,22 @@ class App extends Component {
             <SignUp
               {...props}
               onSignUp={this.signupHandler}
-              loading={loading}
-              error={error}
+              loading={signUpLoading}
+              error={signUpError}
             />
           )}
         />
         <Route path="/profile" exact component={Profile} />
-        <Route path="/logout" exact component={Logout} />
       </Switch>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  error: state.auth.error,
-  loading: state.auth.loading,
+  loginLoading: state.auth.loginLoading,
+  loginError: state.auth.loginError,
+  signUpLoading: state.auth.signUpLoading,
+  signUpError: state.auth.signUpError,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -166,6 +166,7 @@ export const likePost = (postId, token) => {
         dispatch(fetchPosts());
       })
       .catch(error => {
+        toast.error(error.response.statusText);
         console.log(error);
       });
   };

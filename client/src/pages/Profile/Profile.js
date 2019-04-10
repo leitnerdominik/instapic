@@ -9,6 +9,7 @@ import Spinner from '../../components/Spinner/Spinner';
 import ProfilePosts from '../../components/ProfilePosts/ProfilePosts';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
+import ErrorModal from '../../components/ErrorModal/ErrorModal';
 
 import classes from './Profile.module.css';
 
@@ -62,6 +63,8 @@ class Profile extends Component {
       profilePosts,
       loadingProfile,
       loadingStatus,
+      profileError,
+      onProfileReset,
     } = this.props;
     const { status } = this.state;
 
@@ -76,9 +79,7 @@ class Profile extends Component {
       statusButton = <Button onClick={this.setStatusHandler}>Save</Button>;
     }
 
-    if (loadingProfile) {
-      content = <Spinner />;
-    } else if (profileName && profileEmail) {
+    if (!loadingProfile) {
       content = (
         <Fragment>
           <ToastContainer
@@ -92,6 +93,7 @@ class Profile extends Component {
             draggable
             pauseOnHover
           />
+          <ErrorModal error={profileError} close={onProfileReset} />
           <h2>Profile</h2>
           <p className={classes.ProfileTitle}>
             Name
@@ -110,18 +112,19 @@ class Profile extends Component {
             type="text"
             control="input"
             onChange={this.statusChangeHandler}
-            // ich hab bind geloescht!! this.statusChangeHandler.bind(this)
           />
           {statusButton}
 
           <h3>Your Posts</h3>
-          {profilePosts.length > 0 ? (
+          {profilePosts ? (
             <ProfilePosts posts={profilePosts} />
           ) : (
             <p>No Posts found!</p>
           )}
         </Fragment>
       );
+    } else {
+      content = <Spinner />;
     }
 
     return (
@@ -140,11 +143,13 @@ const mapStateToProps = state => ({
   profilePosts: state.user.posts,
   loadingProfile: state.user.loadingProfile,
   loadingStatus: state.user.loadingStatus,
+  profileError: state.user.error,
 });
 
 const mapDispatchToProps = dispatch => ({
   onSetStatus: (status, token) => dispatch(action.setStatus(status, token)),
   onFetchProfile: token => dispatch(action.fetchProfile(token)),
+  onProfileReset: () => dispatch(action.profileReset()),
 });
 
 export default connect(

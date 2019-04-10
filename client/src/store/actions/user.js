@@ -86,10 +86,15 @@ export const setStatus = (status, token) => {
         toast.success(response.data.message);
       })
       .catch(error => {
-        const msg = error.message;
+        const msg = error.response.message || 'Invalid input!';
         dispatch(setStatusFail(msg));
         console.log(msg);
-        toast.error(msg);
       });
+  };
+};
+
+export const profileReset = () => {
+  return {
+    type: actionTypes.PROFILE_RESET,
   };
 };

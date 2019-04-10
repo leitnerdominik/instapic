@@ -8,8 +8,9 @@ import Button from '../../components/Button/Button';
 import Error from '../../components/Error/Error';
 import Form from '../../components/Form/Form';
 import Spinner from '../../components/Spinner/Spinner';
+import Logo from '../../components/Logo/Logo';
 
-import { validationSchema } from '../../util/is-valid';
+import validationSchema from '../../util/is-valid';
 
 class SignUp extends Component {
   state = {
@@ -60,7 +61,7 @@ class SignUp extends Component {
         ...prevState.signupform,
         [input]: {
           ...prevState.signupform[input],
-          value: value,
+          value,
         },
       };
 
@@ -71,15 +72,16 @@ class SignUp extends Component {
   };
 
   inputBlurHandler = input => {
-    const value = this.state.signupform[input].value;
+    const { signupform } = this.state;
+    const { value } = signupform[input];
 
     validationSchema
       .validateAt(input, { [input]: value })
       .then(() => {
         const updatedSignUpForm = {
-          ...this.state.signupform,
+          ...signupform,
           [input]: {
-            ...this.state.signupform[input],
+            ...signupform[input],
             valid: true,
             error: '',
           },
@@ -87,10 +89,11 @@ class SignUp extends Component {
         this.setState({ signupform: updatedSignUpForm });
       })
       .catch(err => {
+        console.log(err);
         const errorSignUpForm = {
-          ...this.state.signupform,
+          ...signupform,
           [input]: {
-            ...this.state.signupform[input],
+            ...signupform[input],
             valid: false,
             error: err.message,
           },
@@ -103,6 +106,7 @@ class SignUp extends Component {
     event.preventDefault();
 
     const { signupform } = this.state;
+    const { onSignUp, history } = this.props;
 
     const prepData = {
       email: signupform.email.value,
@@ -130,8 +134,8 @@ class SignUp extends Component {
         return { signupform: updatedSignUpForm };
       });
     } else {
-      this.props.onSignUp(event, prepData);
-      this.props.history.replace('/login');
+      onSignUp(event, prepData);
+      history.replace('/login');
     }
 
     // const inputValues = {};
@@ -146,9 +150,11 @@ class SignUp extends Component {
 
   render() {
     const { signupform, formIsValid } = this.state;
+    const { loading } = this.props;
 
-    let inputs = [];
-    for (let input in signupform) {
+    const inputs = [];
+
+    Object.keys(signupform).forEach(input => {
       inputs.push(
         <Input
           label={signupform[input].label}
@@ -162,9 +168,9 @@ class SignUp extends Component {
           control={signupform[input].control}
           onChange={this.inputChangeHandler}
           onBlur={this.inputBlurHandler}
-        />
+        />,
       );
-    }
+    });
 
     let wrongForm = null;
 
@@ -177,13 +183,13 @@ class SignUp extends Component {
         <Auth>
           <ToastContainer position="top-center" />
           <Form onSubmit={event => this.checkForm(event)}>
+            <div>
+              <Logo />
+            </div>
+            <h3>Sign Up</h3>
             {wrongForm}
             {inputs}
-            {this.props.loading ? (
-              <Spinner />
-            ) : (
-              <Button type="submit">Sign Up</Button>
-            )}
+            {loading ? <Spinner /> : <Button type="submit">Sign Up</Button>}
           </Form>
         </Auth>
       </Layout>

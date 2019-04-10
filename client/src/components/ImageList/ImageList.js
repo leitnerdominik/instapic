@@ -12,7 +12,7 @@ import { host } from '../../config.json';
 import classes from './ImageList.module.css';
 
 const imageList = props => {
-  const { images, editPost, deletePost, likePost, sharePost } = props;
+  const { images, editPost, deletePost, likePost, sharePost, isAuth } = props;
   const maxDescriptionLength = 100;
   const img = images.map(image => {
     let { description } = image;
@@ -25,6 +25,20 @@ const imageList = props => {
     let hearthColor = 'black';
     if (image.likedUser.includes(currentUserId)) {
       hearthColor = 'red';
+    }
+
+    let changePostButtons = null;
+    if (isAuth) {
+      changePostButtons = (
+        <div className={classes.ButtonContainer}>
+          <Button design="cancel" onClick={() => deletePost(image._id)}>
+            {'Delete'}
+          </Button>
+          <Button onClick={() => editPost(image._id)}>Edit</Button>
+        </div>
+      );
+    } else {
+      hearthColor = 'blue';
     }
 
     return (
@@ -41,6 +55,7 @@ const imageList = props => {
             <Button
               onClick={event => likePost(event, image._id)}
               design="transparent"
+              tooltip="Like Post"
             >
               <span className={classes.Likes}>{image.likes}</span>
               <FontAwesomeIcon
@@ -55,23 +70,18 @@ const imageList = props => {
               onCopy={sharePost}
               text={`${host}post/${image._id}`}
             >
-              <Button design="transparent">
+              <Button tooltip="Copy Post-Link" design="transparent">
                 <FontAwesomeIcon
                   style={{
                     color: 'blue',
                   }}
-                  icon="share-alt"
+                  icon={['far', 'copy']}
                   size="2x"
                 />
               </Button>
             </CopyToClipboard>
           </div>
-          <div className={classes.ButtonContainer}>
-            <Button design="cancel" onClick={() => deletePost(image._id)}>
-              {'Delete'}
-            </Button>
-            <Button onClick={() => editPost(image._id)}>Edit</Button>
-          </div>
+          {changePostButtons}
         </div>
       </div>
     );

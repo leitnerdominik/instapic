@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 import Layout from '../../container/Layout/Layout';
@@ -9,8 +9,11 @@ import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import Form from '../../components/Form/Form';
 import Spinner from '../../components/Spinner/Spinner';
+import Logo from '../../components/Logo/Logo';
 
-import { validationSchema } from '../../util/is-valid';
+import validationSchema from '../../util/is-valid';
+
+import classes from './Login.module.css';
 
 class Login extends Component {
   state = {
@@ -37,8 +40,9 @@ class Login extends Component {
   };
 
   componentDidUpdate() {
-    if (this.props.isAuth) {
-      this.props.history.replace('/');
+    const { isAuth, history } = this.props;
+    if (isAuth) {
+      history.replace('/');
     }
   }
 
@@ -48,7 +52,7 @@ class Login extends Component {
         ...prevState.loginForm,
         [input]: {
           ...prevState.loginForm[input],
-          value: value,
+          value,
         },
       };
 
@@ -59,14 +63,15 @@ class Login extends Component {
   };
 
   inputBlurHandler = input => {
-    const value = this.state.loginForm[input].value;
+    const { loginForm } = this.state;
+    const { value } = loginForm[input];
     validationSchema
       .validateAt(input, { [input]: value })
       .then(valid => {
         const updatedLoginForm = {
-          ...this.state.loginForm,
+          ...loginForm,
           [input]: {
-            ...this.state.loginForm[input],
+            ...loginForm[input],
             valid: true,
             error: '',
           },
@@ -76,9 +81,9 @@ class Login extends Component {
       })
       .catch(err => {
         const errorLoginForm = {
-          ...this.state.loginForm,
+          ...loginForm,
           [input]: {
-            ...this.state.loginForm[input],
+            ...loginForm[input],
             valid: false,
             error: err.message,
           },
@@ -92,21 +97,23 @@ class Login extends Component {
     event.preventDefault();
 
     const { loginForm } = this.state;
+    const { onLogin } = this.props;
 
     const prepData = {
       email: loginForm.email.value,
       password: loginForm.password.value,
     };
 
-    this.props.onLogin(event, prepData);
+    onLogin(event, prepData);
   };
 
   render() {
     const { loginForm } = this.state;
+    const { loading } = this.props;
 
-    let inputs = [];
+    const inputs = [];
 
-    for (let input in loginForm) {
+    Object.keys(loginForm).forEach(input => {
       inputs.push(
         <Input
           label={loginForm[input].label}
@@ -114,26 +121,31 @@ class Login extends Component {
           key={loginForm[input].id}
           id={loginForm[input].id}
           type={loginForm[input].type}
-          valid={loginForm[input].valid}
           errorMessage={loginForm[input].error}
+          valid={loginForm[input].valid}
+          touched={loginForm[input].touched}
           control={loginForm[input].control}
           onChange={this.inputChangeHandler}
           onBlur={this.inputBlurHandler}
-        />
+        />,
       );
-    }
+    });
 
     return (
       <Layout>
         <Auth>
           <ToastContainer position="top-center" />
           <Form onSubmit={event => this.checkForm(event)}>
+            <div>
+              <Logo />
+            </div>
+            <h3>Login</h3>
             {inputs}
-            {this.props.loading ? (
-              <Spinner />
-            ) : (
-              <Button type="submit">Login</Button>
-            )}
+            {loading ? <Spinner /> : <Button type="submit">Login</Button>}
+            <p className={classes.SignUp}>
+              {'New to Instapic? '}
+              <Link to="/signup">SIGN UP</Link>
+            </p>
           </Form>
         </Auth>
       </Layout>

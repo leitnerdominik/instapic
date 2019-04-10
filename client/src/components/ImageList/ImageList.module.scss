@@ -28,6 +28,9 @@
 }
 
 .Options {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   button:hover {
     transition: ease-out 0.5s;
     transform: scale(1.1);

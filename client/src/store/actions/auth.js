@@ -4,11 +4,10 @@ import * as actionTypes from './actionTypes';
 import axiosUtil from '../../util/axios-util';
 
 import * as actions from './index';
-import { userLogout } from './user';
 
-const authStart = () => {
+const authLoginStart = () => {
   return {
-    type: actionTypes.AUTH_START,
+    type: actionTypes.AUTH_LOGIN_START,
   };
 };
 
@@ -19,6 +18,18 @@ const authLoginSuccess = (token, userId) => {
     userId,
   };
 };
+const authLoginFailed = error => {
+  return {
+    type: actionTypes.AUTH_LOGIN_FAILED,
+    error,
+  };
+};
+
+const authSignUpStart = () => {
+  return {
+    type: actionTypes.AUTH_SIGNUP_START,
+  };
+};
 
 const authSignupSuccess = () => {
   return {
@@ -26,9 +37,9 @@ const authSignupSuccess = () => {
   };
 };
 
-const authFailed = error => {
+const authSignUpFailed = error => {
   return {
-    type: actionTypes.AUTH_FAILED,
+    type: actionTypes.AUTH_SIGNUP_FAILED,
     error,
   };
 };
@@ -53,7 +64,7 @@ const autoLogout = remainingTime => {
 
 export const authLogin = authData => {
   return dispatch => {
-    dispatch(authStart());
+    dispatch(authLoginStart());
     axiosUtil
       .post('auth/login', authData)
       .then(response => {
@@ -73,7 +84,7 @@ export const authLogin = authData => {
         } else if (err.message) {
           error = err.message;
         }
-        dispatch(authFailed(error));
+        dispatch(authLoginFailed(error));
         toast.error(error);
       });
   };
@@ -81,7 +92,7 @@ export const authLogin = authData => {
 
 export const authSignUp = authData => {
   return dispatch => {
-    dispatch(authStart());
+    dispatch(authSignUpStart());
     axiosUtil
       .put('auth/signup', authData)
       .then(response => {
@@ -99,7 +110,7 @@ export const authSignUp = authData => {
           error = err.response.data.message;
           console.log(error);
         }
-        dispatch(authFailed(error));
+        dispatch(authSignUpFailed(error));
         toast.error(error);
       });
   };

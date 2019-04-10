@@ -111,6 +111,7 @@ class Instapic extends Component {
                 onLikePost(postId, token);
               }}
               sharePost={this.sharePostMessage}
+              isAuth={isAuth}
             />
           ) : null}
         </Layout>

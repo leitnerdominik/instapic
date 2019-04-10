@@ -2,7 +2,7 @@ import React from 'react';
 
 import classes from './Button.module.css';
 
-const button = ({ children, design, type, disabled, onClick }) => {
+const button = ({ children, design, type, disabled, onClick, tooltip }) => {
   const buttonClasses = [classes.Button];
   if (design === 'submit') {
     buttonClasses.push(classes.Submit);
@@ -18,6 +18,7 @@ const button = ({ children, design, type, disabled, onClick }) => {
       onClick={onClick}
       className={buttonClasses.join(' ')}
       type={type}
+      title={tooltip}
     >
       <span className={classes.Text}>{children}</span>
     </button>

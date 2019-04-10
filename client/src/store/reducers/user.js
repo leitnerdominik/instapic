@@ -28,7 +28,7 @@ const reducer = (state = initialstate, action) => {
         status: action.status,
         posts: action.posts,
       };
-    case actionTypes.FETCH_POSTS_FAIL:
+    case actionTypes.FETCH_PROFILE_FAIL:
       return {
         ...state,
         loadingProfile: false,
@@ -61,6 +61,16 @@ const reducer = (state = initialstate, action) => {
         ...state,
         loadingStatus: false,
         error: action.error,
+      };
+    case actionTypes.PROFILE_RESET:
+      return {
+        posts: null,
+        name: null,
+        email: null,
+        status: null,
+        error: null,
+        loadingProfile: false,
+        loadingStatus: false,
       };
     default:
       return state;
