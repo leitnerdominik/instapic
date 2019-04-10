@@ -15,7 +15,7 @@ exports.getProfile = (req, res, next) => {
       currentUser = {
         email: user.email,
         name: user.name,
-        // status: user.staus,
+        status: user.status,
       };
 
       return Post.find({
@@ -23,42 +23,48 @@ exports.getProfile = (req, res, next) => {
       });
     })
     .then(posts => {
-
       const profilePosts = posts.map(post => {
         return {
           _id: post._id,
           title: post.title,
-        }
-      })
+        };
+      });
       res
         .status(200)
-        .json({ message: 'Profile fetched!', user: currentUser, posts: profilePosts });
+        .json({
+          message: 'Profile fetched!',
+          user: currentUser,
+          posts: profilePosts,
+        });
     });
 };
 
 exports.setStatus = (req, res, next) => {
   const status = req.body.status;
-  console.log(status);
   const errors = validationResult(req);
-  if(!errors.isEmpty()) {
+  if (!errors.isEmpty()) {
     const error = new Error('Invalid Input!');
     error.statusCode = 422;
     error.data = errors.array();
     throw error;
   }
-  
-  User.findById(req.userId).then(user => {
-    if (!user) {
-      const error = new Error('User not found!');
-      error.statusCode = 422;
-      throw error;
-    }
 
-    user.status = status;
-    return user.save();
-  }).then(response => {
-    res.status(200).json({message: 'Status set!'});
-  }).catch(error => {
-    console.log(error)
-  })
-}
+  User.findById(req.userId)
+    .then(user => {
+      if (!user) {
+        const error = new Error('User not found!');
+        error.statusCode = 422;
+        throw error;
+      }
+
+      user.status = status;
+      return user.save();
+    })
+    .then(response => {
+      res.status(200).json({ message: 'Status set!' });
+    })
+    .catch(error => {
+      console.log(error);
+      next(error);
+    });
+};

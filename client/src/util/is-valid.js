@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-export const validationSchema = yup.object().shape({
+export default yup.object().shape({
   email: yup
     .string()
     .email()
@@ -20,5 +20,3 @@ export const validationSchema = yup.object().shape({
     .min(5)
     .trim(),
 });
-
-

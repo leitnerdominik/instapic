@@ -4,18 +4,20 @@ const initialState = {
   isAuth: false,
   token: null,
   userId: null,
-  error: null,
-  loading: false,
+  loginLoading: false,
+  loginError: null,
+  signUpLoading: false,
+  signUpError: null,
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.AUTH_START:
+    case actionTypes.AUTH_LOGIN_START:
       return {
         ...state,
         isAuth: false,
-        loading: true,
-        error: null,
+        loginLoading: true,
+        loginError: null,
       };
     case actionTypes.AUTH_LOGIN_SUCCESS:
       return {
@@ -23,28 +25,45 @@ const reducer = (state = initialState, action) => {
         isAuth: true,
         token: action.idToken,
         userId: action.userId,
-        loading: false,
-        error: null,
+        loginLoading: false,
+        loginError: null,
+      };
+    case actionTypes.AUTH_LOGIN_FAILED:
+      return {
+        ...state,
+        loginLoading: false,
+        isAuth: false,
+        loginError: action.error,
+      };
+
+    case actionTypes.AUTH_SIGNUP_START:
+      return {
+        ...state,
+        signUpLoading: true,
+        signUpError: null,
       };
     case actionTypes.AUTH_SIGNUP_SUCCESS:
       return {
         ...state,
-        loading: false,
-        error: null,
-      }
-    case actionTypes.AUTH_FAILED:
+        signUpLoading: false,
+        signUpError: null,
+      };
+    case actionTypes.AUTH_SIGNUP_FAILED:
       return {
         ...state,
         isAuth: false,
-        loading: false,
-        error: action.error,
+        signUpLoading: false,
+        signUpError: action.error,
       };
     case actionTypes.AUTH_LOGOUT:
       return {
         ...state,
         isAuth: false,
-        loading: false,
-      }
+        loginLoading: false,
+        loginError: null,
+        signUpLoading: false,
+        signUpError: null,
+      };
     default:
       return state;
   }

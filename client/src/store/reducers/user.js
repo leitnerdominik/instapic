@@ -2,9 +2,12 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialstate = {
   posts: null,
-  user: null,
+  name: null,
+  email: null,
+  status: null,
   error: null,
-  loading: false,
+  loadingProfile: false,
+  loadingStatus: false,
 };
 
 const reducer = (state = initialstate, action) => {
@@ -12,39 +15,62 @@ const reducer = (state = initialstate, action) => {
     case actionTypes.FETCH_PROFILE_START:
       return {
         ...state,
-        loading: true,
+        loadingProfile: true,
         error: null,
       };
     case actionTypes.FETCH_PROFILE_SUCCESS:
       return {
         ...state,
-        loading: false,
+        loadingProfile: false,
         error: null,
-        user: action.user,
+        name: action.name,
+        email: action.email,
+        status: action.status,
         posts: action.posts,
       };
-    case actionTypes.FETCH_POSTS_FAIL:
+    case actionTypes.FETCH_PROFILE_FAIL:
       return {
         ...state,
-        loading: false,
+        loadingProfile: false,
         error: action.error,
+      };
+    case actionTypes.USER_LOGOUT:
+      return {
+        ...state,
+        posts: null,
+        name: null,
+        email: null,
+        status: null,
+        error: null,
+        loadingProfile: false,
+        loadingStatus: false,
       };
     case actionTypes.SET_STATUS_START:
       return {
         ...state,
-        loading: true,
+        loadingStatus: true,
         error: null,
       };
     case actionTypes.SET_STATUS_SUCCESS:
       return {
         ...state,
-        loading: false,
+        loadingStatus: false,
       };
     case actionTypes.SET_STATUS_FAIL:
       return {
         ...state,
-        loading: false,
+        loadingStatus: false,
         error: action.error,
+      };
+    case actionTypes.PROFILE_RESET:
+      return {
+        posts: null,
+        name: null,
+        email: null,
+        status: null,
+        error: null,
+        loadingProfile: false,
+        loadingStatus: false,
       };
     default:
       return state;

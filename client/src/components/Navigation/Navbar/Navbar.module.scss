@@ -8,9 +8,8 @@
   padding: 0 5%;
   height: 50px;
   background: $nav-white;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
   z-index: 50;
-  
 
   display: flex;
   flex-direction: row;
@@ -19,6 +18,7 @@
 }
 
 .Logo {
+<<<<<<< HEAD
   position: relative;
   font-family: 'Pacifico', cursive;
   font-size: 22px;
@@ -32,3 +32,8 @@
     color: black;
   }
 }
+=======
+  height: 48px;
+  width: 48px;
+}
+>>>>>>> 744b81a7e3edc1951bb6ca3b68a425f27c6b00ba

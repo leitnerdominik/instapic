@@ -18,7 +18,9 @@ const errorModal = ({ error, close }) => {
               <span>Error!</span>
             </div>
             <p>{error}</p>
-            <Button design="cancel" onClick={close}>Close</Button>
+            <Button design="cancel" onClick={close}>
+              {'Close'}
+            </Button>
           </div>
         </Modal>
       )}

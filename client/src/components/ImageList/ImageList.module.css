@@ -29,6 +29,9 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -37,6 +40,28 @@
 .Container p {
   width: 250px;
   text-align: center;
+  margin: 0;
+  height: 80px;
+}
+
+.Options {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.Options button:hover {
+  -webkit-transition: ease-out 0.5s;
+  transition: ease-out 0.5s;
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
 }
 
 .ImageContainer {
@@ -48,13 +73,23 @@
   margin: 20px;
 }
 
+.OptionsContainer {
+  display: -ms-grid;
+  display: grid;
+  width: 100%;
+  -ms-grid-columns: 1fr;
+      grid-template-columns: 1fr;
+  grid-gap: 10px;
+  -ms-grid-rows: 40px 40px;
+      grid-template-rows: 40px 40px;
+}
+
+.Title {
+  text-decoration: none;
+  color: black;
+}
+
 .ButtonContainer {
-  position: absolute;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  bottom: 0;
-  right: 0;
-  padding: 20px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -66,5 +101,9 @@
       -ms-flex-pack: justify;
           justify-content: space-between;
   width: 100%;
+}
+
+.Likes {
+  font-size: 2rem;
 }
 /*# sourceMappingURL=ImageList.module.css.map */

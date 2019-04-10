@@ -1,19 +1,25 @@
 .Options {
   margin: 30px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
+  text-align: center;
+  position: relative;
+  line-height: 40px;
+}
+
+.Options button {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .Center {
   text-align: center;
   margin-top: 2rem;
+}
+
+.Status {
+  font-size: 1.3em;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 1px;
 }
 /*# sourceMappingURL=Instapic.module.css.map */

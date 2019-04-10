@@ -14,15 +14,15 @@ const loadAndReset = () => {
 const addPostSuccess = (post, creator) => {
   return {
     type: actionTypes.ADD_POST_SUCCESS,
-    post: post,
-    creator: creator,
+    post,
+    creator,
   };
 };
 
 const addPostFail = error => {
   return {
     type: actionTypes.ADD_POST_FAIL,
-    error: error,
+    error,
   };
 };
 
@@ -38,8 +38,7 @@ export const getPost = postId => {
     axiosUtil
       .get(`post/${postId}`)
       .then(response => {
-        const post = response.data.post;
-        const creator = response.data.creator;
+        const { post, creator } = response.data;
         dispatch(addPostSuccess(post, creator));
       })
       .catch(error => {
@@ -59,7 +58,7 @@ export const addPost = (postData, token) => {
     axiosUtil
       .post('post/post', formData, {
         headers: {
-          Authorization: 'Bearer ' + token,
+          Authorization: `Bearer ${token}`,
         },
       })
       .then(response => {
@@ -80,8 +79,8 @@ export const addPost = (postData, token) => {
 export const searchEditPost = (postId, posts) => {
   return {
     type: actionTypes.SEARCH_EDIT_POST,
-    postId: postId,
-    posts: posts,
+    postId,
+    posts,
   };
 };
 
@@ -109,7 +108,7 @@ export const editPost = (postData, token) => {
       })
       .catch(error => {
         toast.error(error.response.data.message);
-        dispatch(addPostFail(error.response.data.message))
+        dispatch(addPostFail(error.response.data.message));
       });
   };
 };
@@ -126,7 +125,7 @@ const deletePostSuccess = () => {
 const deletePostFail = error => {
   return {
     type: actionTypes.DELETE_POST_FAIL,
-    error: error
+    error,
   };
 };
 
@@ -140,7 +139,7 @@ export const deletePost = (postId, token) => {
     };
     axiosUtil
       .delete(`post/${postId}`, config)
-      .then(response => {
+      .then(() => {
         toast.success('Post deleted!');
         dispatch(deletePostSuccess());
         dispatch(fetchPosts());
@@ -149,6 +148,26 @@ export const deletePost = (postId, token) => {
         console.log(error);
         dispatch(deletePostFail(error));
         toast.error(error.response.statusText);
+      });
+  };
+};
+
+export const likePost = (postId, token) => {
+  return dispatch => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axiosUtil
+      .post(`post/like/${postId}`, null, config)
+      .then(response => {
+        console.log(response);
+        dispatch(fetchPosts());
+      })
+      .catch(error => {
+        toast.error(error.response.statusText);
+        console.log(error);
       });
   };
 };
