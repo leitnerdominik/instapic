@@ -20,4 +20,15 @@
 
 .Logo {
   position: relative;
+  font-family: 'Pacifico', cursive;
+  font-size: 22px;
+
+  span {
+    margin-left: 60px;
+  }
+
+  a {
+    text-decoration: none;
+    color: black;
+  }
 }

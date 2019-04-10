@@ -51,6 +51,7 @@ const navbar = ({ isAuth }) => {
       <div className={classes.Logo}>
         <NavLink to="/">
           <Logo />
+          <span>Instapic</span>
         </NavLink>
       </div>
       <Navigationitems navItems={navItems} />

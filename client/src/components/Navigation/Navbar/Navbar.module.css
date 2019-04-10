@@ -26,5 +26,16 @@
 
 .Logo {
   position: relative;
+  font-family: 'Pacifico', cursive;
+  font-size: 22px;
+}
+
+.Logo span {
+  margin-left: 60px;
+}
+
+.Logo a {
+  text-decoration: none;
+  color: black;
 }
 /*# sourceMappingURL=Navbar.module.css.map */
