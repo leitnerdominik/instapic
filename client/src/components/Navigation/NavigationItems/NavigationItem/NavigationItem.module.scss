@@ -19,16 +19,17 @@
 }
 
 .Primary {
-  border: 3px solid blue;
-  background: blue;
+  border: 3px solid #3897f0;
+  background: #3897f0;
   border-radius: 6px;
   padding: 5px 10px;
   cursor: pointer;
   transition: 0.4s;
   color: white;
+  font-weight: 700;
 
   &:hover {
     background: white;
-    color: blue;
+    color: #3897f0;
   }
 }

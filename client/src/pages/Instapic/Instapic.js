@@ -6,7 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import Button from '../../components/Button/Button';
 import Layout from '../../container/Layout/Layout';
-import ImageList from '../../components/ImageList/ImageList';
+// import ImageList from '../../components/ImageList/ImageList';
+import Posts from '../../components/Posts/Posts';
 import PostImage from '../../container/PostImage/PostImage';
 import Spinner from '../../components/Spinner/Spinner';
 import ErrorModal from '../../components/ErrorModal/ErrorModal';
@@ -34,7 +35,7 @@ class Instapic extends Component {
 
   sharePostMessage = () => {
     toast.info(`Post link copied! :)`);
-  }
+  };
 
   togglePostImage = () => {
     this.setState(prevState => ({
@@ -102,18 +103,28 @@ class Instapic extends Component {
             <p className={classes.Center}>No posts found!</p>
           ) : null}
           {posts.length > 0 && !loadingPosts ? (
-            <ImageList
-              images={posts}
-              deletePost={postId => onDeletePost(postId, token)}
+            <Posts
+              postsData={posts}
               editPost={postId => onSearchEditPost(postId, posts)}
+              deletePost={postId => onDeletePost(postId, token)}
               likePost={(event, postId) => {
                 event.preventDefault();
                 onLikePost(postId, token);
               }}
               sharePost={this.sharePostMessage}
-              isAuth={isAuth}
             />
-          ) : null}
+          ) : // <ImageList
+          //   posts={posts}
+          //   deletePost={postId => onDeletePost(postId, token)}
+          //   editPost={postId => onSearchEditPost(postId, posts)}
+          //   likePost={(event, postId) => {
+          //     event.preventDefault();
+          //     onLikePost(postId, token);
+          //   }}
+          //   sharePost={this.sharePostMessage}
+          //   isAuth={isAuth}
+          // />
+          null}
         </Layout>
       </Fragment>
     );
@@ -121,7 +132,7 @@ class Instapic extends Component {
 }
 
 const mapStateToProps = state => ({
-  profileStatus: state.user.status,
+  profileStatus: state.user.user.status,
   isAuth: state.auth.isAuth,
   token: state.auth.token,
   posts: state.posts.posts,

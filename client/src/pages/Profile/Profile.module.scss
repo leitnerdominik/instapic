@@ -1,8 +1,13 @@
 @import '../../styles/util';
 
 .Container {
-  @include center-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   max-width: 450px;
+  margin: 0 auto;
+  text-align: center;
 
   label {
     font-weight: bold;
@@ -19,4 +24,18 @@
   margin: 16px;
   padding: 0;
   font-weight: bold;
+}
+
+.ProfilePhoto {
+  height: 150px;
+  width: 150px;
+  border: 1px solid black;
+  overflow: hidden;
+  margin: 10px auto;
+  border-radius: 50%;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.5;
+  }
 }

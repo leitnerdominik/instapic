@@ -25,22 +25,32 @@
 }
 
 .Logo {
-<<<<<<< HEAD
   position: relative;
   font-family: 'Pacifico', cursive;
   font-size: 22px;
-}
-
-.Logo span {
-  margin-left: 60px;
+  width: 150px;
 }
 
 .Logo a {
   text-decoration: none;
   color: black;
-=======
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.Logo img {
   height: 48px;
   width: 48px;
->>>>>>> 744b81a7e3edc1951bb6ca3b68a425f27c6b00ba
 }
 /*# sourceMappingURL=Navbar.module.css.map */

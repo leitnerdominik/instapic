@@ -14,6 +14,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  photoUrl: {
+    type: String,
+    default: 'http://localhost:8080/images/profilePictures/no_pic.jpg',
+  },
   status: {
     type: String,
     required: false,

@@ -15,6 +15,7 @@ exports.getProfile = (req, res, next) => {
       currentUser = {
         email: user.email,
         name: user.name,
+        photoUrl: user.photoUrl,
         status: user.status,
       };
 

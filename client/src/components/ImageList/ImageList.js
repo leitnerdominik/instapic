@@ -12,13 +12,9 @@ import { host } from '../../config.json';
 import classes from './ImageList.module.css';
 
 const imageList = props => {
-  const { images, editPost, deletePost, likePost, sharePost, isAuth } = props;
+  const { posts, editPost, deletePost, likePost, sharePost, isAuth } = props;
   const maxDescriptionLength = 100;
   const img = images.map(image => {
-    let { description } = image;
-    if (image.description.length > maxDescriptionLength) {
-      description = `${image.description.slice(0, maxDescriptionLength)}...`;
-    }
 
     const currentUserId = localStorage.getItem('userId');
 

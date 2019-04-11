@@ -8,7 +8,7 @@ import Button from '../../components/Button/Button';
 import Image from '../../components/Image/Image';
 import Spinner from '../../components/Spinner/Spinner';
 
-import { host } from '../../config.json';
+import { serverUrl } from '../../config.json';
 import * as action from '../../store/actions/index';
 
 import { generateBase64FromImage } from '../../util/image';
@@ -76,7 +76,7 @@ class PostImage extends Component {
           },
         };
 
-        return { postImg: updateForm, imagePreview: host + editPost.imgUrl };
+        return { postImg: updateForm, imagePreview: serverUrl + editPost.imgUrl };
       });
     }
   }

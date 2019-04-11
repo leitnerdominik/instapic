@@ -18,22 +18,27 @@
 }
 
 .Logo {
-<<<<<<< HEAD
   position: relative;
   font-family: 'Pacifico', cursive;
   font-size: 22px;
-
-  span {
-    margin-left: 60px;
-  }
-
+  width: 150px;
+  
+  
   a {
     text-decoration: none;
     color: black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
   }
+  img {
+    height: 48px;
+    width: 48px;
+  }
+
+  // span {
+  //   margin-left: 60px;
+  // }
+
 }
-=======
-  height: 48px;
-  width: 48px;
-}
->>>>>>> 744b81a7e3edc1951bb6ca3b68a425f27c6b00ba

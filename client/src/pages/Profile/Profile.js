@@ -10,6 +10,7 @@ import ProfilePosts from '../../components/ProfilePosts/ProfilePosts';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import ErrorModal from '../../components/ErrorModal/ErrorModal';
+import Image from '../../components/Image/Image';
 
 import classes from './Profile.module.css';
 
@@ -58,8 +59,7 @@ class Profile extends Component {
 
   render() {
     const {
-      profileName,
-      profileEmail,
+      profile,
       profilePosts,
       loadingProfile,
       loadingStatus,
@@ -79,7 +79,7 @@ class Profile extends Component {
       statusButton = <Button onClick={this.setStatusHandler}>Save</Button>;
     }
 
-    if (!loadingProfile) {
+    if (!loadingProfile && profile.name) {
       content = (
         <Fragment>
           <ToastContainer
@@ -97,12 +97,17 @@ class Profile extends Component {
           <h2>Profile</h2>
           <p className={classes.ProfileTitle}>
             Name
-            <span className={classes.ProfileData}>{profileName}</span>
+            <span className={classes.ProfileData}>{profile.name}</span>
           </p>
-
+          <div className={classes.ProfileTitle}>
+            Profile Picture
+            <div className={classes.ProfilePhoto}>
+              <Image imgUrl={profile.photoUrl} />
+            </div>
+          </div>
           <p className={classes.ProfileTitle}>
             E-Mail
-            <span className={classes.ProfileData}>{profileEmail}</span>
+            <span className={classes.ProfileData}>{profile.email}</span>
           </p>
 
           <Input
@@ -137,9 +142,7 @@ class Profile extends Component {
 
 const mapStateToProps = state => ({
   token: state.auth.token,
-  profileName: state.user.name,
-  profileEmail: state.user.email,
-  profileStatus: state.user.status,
+  profile: state.user.user,
   profilePosts: state.user.posts,
   loadingProfile: state.user.loadingProfile,
   loadingStatus: state.user.loadingStatus,

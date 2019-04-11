@@ -15,6 +15,7 @@ const fetchProfileSuccess = (user, posts) => {
     type: actionTypes.FETCH_PROFILE_SUCCESS,
     name: user.name,
     email: user.email,
+    photoUrl: user.photoUrl,
     status: user.status,
     posts,
   };

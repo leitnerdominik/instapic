@@ -5,7 +5,7 @@ import Layout from '../../container/Layout/Layout';
 import Spinner from '../../components/Spinner/Spinner';
 import Image from '../../components/Image/Image';
 
-import { host } from '../../config.json';
+import { serverUrl } from '../../config.json';
 
 import * as actions from '../../store/actions/index';
 import classes from './SinglePost.module.css';
@@ -33,14 +33,13 @@ class SinglePost extends Component {
             <Image
               containerWidth="250px"
               containerHeight="250px"
-              imgUrl={host + post.imgUrl}
+              imgUrl={serverUrl + post.imgUrl}
             />
           </div>
           <p>{post.description}</p>
         </section>
       );
     }
-    
     return (
       <Layout>
         <div className={classes.Center}>{content}</div>
@@ -64,5 +63,5 @@ const mapDispatchToProps = dispatch => {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(SinglePost);

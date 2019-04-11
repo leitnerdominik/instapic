@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import Navigationitems from '../NavigationItems/NavigationItems';
 import Logo from '../../Logo/Logo';
@@ -39,10 +39,10 @@ const navbar = ({ isAuth, clicked }) => {
   return (
     <div className={classes.Container}>
       <div className={classes.Logo}>
-        <NavLink to="/">
+        <Link to="/">
           <Logo />
           <span>Instapic</span>
-        </NavLink>
+        </Link>
       </div>
       <Navigationitems clicked={clicked} navItems={navItems} />
     </div>

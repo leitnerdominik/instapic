@@ -2,9 +2,12 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialstate = {
   posts: null,
-  name: null,
-  email: null,
-  status: null,
+  user: {
+    name: null,
+    email: null,
+    photoUrl: null,
+    status: null,
+  },
   error: null,
   loadingProfile: false,
   loadingStatus: false,
@@ -23,9 +26,12 @@ const reducer = (state = initialstate, action) => {
         ...state,
         loadingProfile: false,
         error: null,
-        name: action.name,
-        email: action.email,
-        status: action.status,
+        user: {
+          name: action.name,
+          email: action.email,
+          photoUrl: action.photoUrl,
+          status: action.status,
+        },
         posts: action.posts,
       };
     case actionTypes.FETCH_PROFILE_FAIL:
@@ -38,9 +44,12 @@ const reducer = (state = initialstate, action) => {
       return {
         ...state,
         posts: null,
-        name: null,
-        email: null,
-        status: null,
+        user: {
+          name: null,
+          email: null,
+          photoUrl: null,
+          status: null,
+        },
         error: null,
         loadingProfile: false,
         loadingStatus: false,
@@ -65,9 +74,12 @@ const reducer = (state = initialstate, action) => {
     case actionTypes.PROFILE_RESET:
       return {
         posts: null,
-        name: null,
-        email: null,
-        status: null,
+        user: {
+          name: null,
+          email: null,
+          photoUrl: null,
+          status: null,
+        },
         error: null,
         loadingProfile: false,
         loadingStatus: false,
