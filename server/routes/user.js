@@ -7,15 +7,17 @@ const isAuth = require('../middleware/is-auth');
 const router = express.Router();
 
 router.get('/profile', isAuth, userController.getProfile);
-router.put(
-  '/status',
-  [
-    body('status')
-      .trim()
-      .exists({ checkFalsy: true }),
-  ],
-  isAuth,
-  userController.setStatus
-);
+// router.put(
+//   '/status',
+//   [
+//     body('status')
+//       .trim()
+//       .exists({ checkFalsy: true }),
+//   ],
+//   isAuth,
+//   userController.setStatus
+// );
+
+router.put('/profile', isAuth, userController.setProfile);
 
 module.exports = router;

@@ -1,5 +1,3 @@
-import { toast } from 'react-toastify';
-
 import * as actionTypes from './actionTypes';
 
 import axiosUtil from '../../util/axios-util';
@@ -43,22 +41,23 @@ export const fetchProfile = token => dispatch => {
     });
 };
 
-const setStatusStart = () => {
+const saveProfileStart = () => {
   return {
-    type: actionTypes.SET_STATUS_START,
+    type: actionTypes.SAVE_PROFILE_START,
   };
 };
 
-const setStatusSuccess = status => {
+const saveProfileSuccess = (photoUrl, status) => {
   return {
-    type: actionTypes.SET_STATUS_SUCCESS,
+    type: actionTypes.SAVE_PROFILE_SUCCESS,
     status,
+    photoUrl,
   };
 };
 
-const setStatusFail = error => {
+const saveProfileFail = error => {
   return {
-    type: actionTypes.SET_STATUS_FAIL,
+    type: actionTypes.SAVE_PROFFILE_FAIL,
     error,
   };
 };
@@ -69,28 +68,36 @@ export const userLogout = () => {
   };
 };
 
-export const setStatus = (status, token) => {
+export const saveProfile = (profileData, token) => {
   return dispatch => {
-    dispatch(setStatusStart());
-    const data = {
-      status,
-    };
+    dispatch(saveProfileStart());
+    const formData = new FormData();
+    formData.append('status', profileData.status);
+    formData.append('profileUrl', profileData.photo);
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
     axiosUtil
-      .put('user/status', data, config)
+      .put('user/profile', formData, config)
       .then(response => {
-        dispatch(setStatusSuccess(status));
-        toast.success(response.data.message);
+        const { photoUrl, status } = response.data.user;
+        dispatch(saveProfileSuccess(photoUrl, status));
+        // toast.success(response.data.message);
       })
       .catch(error => {
+        console.log(error);
         const msg = error.response.message || 'Invalid input!';
-        dispatch(setStatusFail(msg));
-        console.log(msg);
+        dispatch(saveProfileFail(msg));
       });
+  };
+};
+
+export const statusChangeHandler = value => {
+  return {
+    type: actionTypes.STATUS_CHANGE_HANDLER,
+    status: value,
   };
 };
 

@@ -10,7 +10,7 @@ const initialstate = {
   },
   error: null,
   loadingProfile: false,
-  loadingStatus: false,
+  loadingSaveProfile: false,
 };
 
 const reducer = (state = initialstate, action) => {
@@ -54,22 +54,35 @@ const reducer = (state = initialstate, action) => {
         loadingProfile: false,
         loadingStatus: false,
       };
-    case actionTypes.SET_STATUS_START:
+    case actionTypes.SAVE_PROFILE_START:
       return {
         ...state,
-        loadingStatus: true,
+        loadingSaveProfile: true,
         error: null,
       };
-    case actionTypes.SET_STATUS_SUCCESS:
+    case actionTypes.SAVE_PROFILE_SUCCESS:
       return {
         ...state,
-        loadingStatus: false,
+        loadingSaveProfile: false,
+        user: {
+          ...state.user,
+          status: action.status,
+          photoUrl: action.photoUrl,
+        },
       };
-    case actionTypes.SET_STATUS_FAIL:
+    case actionTypes.SAVE_PROFFILE_FAIL:
       return {
         ...state,
-        loadingStatus: false,
+        loadingSaveProfile: false,
         error: action.error,
+      };
+    case actionTypes.STATUS_CHANGE_HANDLER:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          status: action.status,
+        },
       };
     case actionTypes.PROFILE_RESET:
       return {

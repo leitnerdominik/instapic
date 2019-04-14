@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const Post = require('../models/post');
 const { validationResult } = require('express-validator/check');
+const { deleteImg } = require('../util/deleteFile');
 
 exports.getProfile = (req, res, next) => {
   let currentUser;
@@ -30,13 +31,11 @@ exports.getProfile = (req, res, next) => {
           title: post.title,
         };
       });
-      res
-        .status(200)
-        .json({
-          message: 'Profile fetched!',
-          user: currentUser,
-          posts: profilePosts,
-        });
+      res.status(200).json({
+        message: 'Profile fetched!',
+        user: currentUser,
+        posts: profilePosts,
+      });
     });
 };
 
@@ -63,6 +62,50 @@ exports.setStatus = (req, res, next) => {
     })
     .then(response => {
       res.status(200).json({ message: 'Status set!' });
+    })
+    .catch(error => {
+      console.log(error);
+      next(error);
+    });
+};
+
+exports.setProfile = (req, res, next) => {
+  // if (!req.file) {
+  //   const error = new Error('Image not found');
+  //   error.statusCode = 422;
+  //   throw error;
+  // }
+
+  const status = req.body.status;
+  
+  let photoUrl = null;
+  if (req.files.profileUrl) {
+    photoUrl = req.files.profileUrl[0].path;
+  }
+  
+
+  User.findById(req.userId)
+    .then(user => {
+      if (!user) {
+        const error = new Error('User not found!');
+        error.statusCode = 422;
+        throw error;
+      }
+
+      if (!photoUrl) {
+        photoUrl = user.photoUrl;
+      }
+
+      if (photoUrl !== user.photoUrl) {
+        deleteImg(user.photoUrl);
+      }
+
+      user.status = status;
+      user.photoUrl = photoUrl;
+      return user.save();
+    })
+    .then(user => {
+      res.status(200).json({ message: 'User edited!', user: user });
     })
     .catch(error => {
       console.log(error);

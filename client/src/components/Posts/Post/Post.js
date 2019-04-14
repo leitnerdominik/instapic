@@ -19,8 +19,16 @@ const post = props => {
     hearthColor = 'red';
   }
 
+  const maxDescriptionLength = 100;
+  let description = postData.description.slice(0, maxDescriptionLength);
+  console.log(description.length);
+
+  if (description.length === 100) {
+    description = description.concat('...');
+  }
+
   let showPostOptions = null;
-  if (postData.creator === currentUserId) {
+  if (postData.creator._id === currentUserId) {
     showPostOptions = (
       <div className={classes.OptionsContainer}>
         <div className={classes.ButtonContainer}>
@@ -35,9 +43,15 @@ const post = props => {
 
   return (
     <article className={classes.Container}>
-      <Link className={classes.Title} to={`post/${postData._id}`}>
-        <h2>{postData.title}</h2>
-      </Link>
+      <div className={classes.Header}>
+        <div className={classes.ProfilePhoto}>
+          <Image imgUrl={serverUrl + postData.creator.photoUrl} />
+        </div>
+        <span>{postData.creator.name}</span>
+        <Link className={classes.Title} to={`post/${postData._id}`}>
+          <h2>{postData.title}</h2>
+        </Link>
+      </div>
       <div className={classes.ImageContainer}>
         <Image imgUrl={serverUrl + postData.imgUrl} />
       </div>
@@ -75,7 +89,7 @@ const post = props => {
           {postData.likes === 1 ? ' like' : ' likes'}
         </span>
       </div>
-      <p className={classes.Text}>{postData.description}</p>
+      <div className={classes.Text}>{description}</div>
       {showPostOptions}
     </article>
   );

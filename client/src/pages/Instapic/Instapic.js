@@ -113,18 +113,7 @@ class Instapic extends Component {
               }}
               sharePost={this.sharePostMessage}
             />
-          ) : // <ImageList
-          //   posts={posts}
-          //   deletePost={postId => onDeletePost(postId, token)}
-          //   editPost={postId => onSearchEditPost(postId, posts)}
-          //   likePost={(event, postId) => {
-          //     event.preventDefault();
-          //     onLikePost(postId, token);
-          //   }}
-          //   sharePost={this.sharePostMessage}
-          //   isAuth={isAuth}
-          // />
-          null}
+          ) : null}
         </Layout>
       </Fragment>
     );

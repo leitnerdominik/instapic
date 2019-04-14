@@ -9,4 +9,10 @@ export {
   deletePost,
   likePost,
 } from './post';
-export { fetchProfile, setStatus, userLogout, profileReset } from './user';
+export {
+  fetchProfile,
+  saveProfile,
+  userLogout,
+  profileReset,
+  statusChangeHandler,
+} from './user';

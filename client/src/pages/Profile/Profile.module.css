@@ -40,6 +40,17 @@
   overflow: hidden;
   margin: 10px auto;
   border-radius: 50%;
+  position: relative;
+}
+
+.ProfilePhoto input {
+  cursor: pointer;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
 }
 
 .ProfilePhoto:hover {

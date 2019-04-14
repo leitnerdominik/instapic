@@ -11,6 +11,9 @@ import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import ErrorModal from '../../components/ErrorModal/ErrorModal';
 import Image from '../../components/Image/Image';
+import { serverUrl } from '../../config.json';
+
+import generateBase64FromImage from '../../util/image';
 
 import classes from './Profile.module.css';
 
@@ -20,21 +23,28 @@ class Profile extends Component {
   constructor(props) {
     super(props);
 
-    const { profileStatus } = this.props;
-
     this.state = {
-      status: {
-        value: profileStatus || '',
-      },
+      imagePreview: null,
+      photo: null,
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     const { token, onFetchProfile } = this.props;
     if (token) {
       onFetchProfile(token);
     }
   }
+
+  // componentDidMount() {
+  //   const { profile } = this.props;
+  //   const { status } = this.state;
+
+  //   if (profile.status !== status.value) {
+  //     console.log(profile, status);
+  //     this.setState({ status: { value: profile.status } });
+  //   }
+  // }
 
   componentDidUpdate(prevProps) {
     const { token, onFetchProfile } = this.props;
@@ -43,18 +53,40 @@ class Profile extends Component {
     }
   }
 
-  statusChangeHandler = (id, value) => {
-    this.setState({
-      status: {
-        value,
-      },
-    });
+  // statusChangeHandler = (id, value) => {
+  //   this.setState({
+  //     status: {
+  //       value,
+  //     },
+  //   });
+  // };
+
+  // setStatusHandler = () => {
+  //   const { status } = this.state;
+  //   const { token, onSetStatus } = this.props;
+  //   onSetStatus(status.value, token);
+  // };
+
+  setProfilePhoto = (id, value, files) => {
+    if (files.length > 0) {
+      generateBase64FromImage(files[0])
+        .then(b64 => {
+          this.setState({ imagePreview: b64, photo: files[0] });
+        })
+        .catch(() => {
+          this.setState({ imagePreview: null, photo: null });
+        });
+    }
   };
 
-  setStatusHandler = () => {
-    const { status } = this.state;
-    const { token, onSetStatus } = this.props;
-    onSetStatus(status.value, token);
+  saveProfile = () => {
+    const { photo } = this.state;
+    const { token, onSaveProfile, profile } = this.props;
+    const profileObj = {
+      photo,
+      status: profile.status,
+    };
+    onSaveProfile(profileObj, token);
   };
 
   render() {
@@ -62,24 +94,27 @@ class Profile extends Component {
       profile,
       profilePosts,
       loadingProfile,
-      loadingStatus,
+      loadingSaveProfile,
       profileError,
       onProfileReset,
+      onChangeStatus,
     } = this.props;
-    const { status } = this.state;
-
-    // let content = <Spinner />; // TODO Spinner wirklich nur anzeigen, wenn etwas am laden ist!
+    const { imagePreview } = this.state;
 
     let content = null;
-    let statusButton = null;
+    let saveProfile = null;
 
-    if (loadingStatus) {
-      statusButton = <Spinner />;
+    if (loadingSaveProfile) {
+      saveProfile = <Spinner />;
     } else {
-      statusButton = <Button onClick={this.setStatusHandler}>Save</Button>;
+      saveProfile = <Button onClick={this.saveProfile}>Save</Button>;
     }
 
     if (!loadingProfile && profile.name) {
+      let profilePhoto = serverUrl + profile.photoUrl;
+      if (imagePreview) {
+        profilePhoto = imagePreview;
+      }
       content = (
         <Fragment>
           <ToastContainer
@@ -102,7 +137,13 @@ class Profile extends Component {
           <div className={classes.ProfileTitle}>
             Profile Picture
             <div className={classes.ProfilePhoto}>
-              <Image imgUrl={profile.photoUrl} />
+              <Image imgUrl={profilePhoto} />
+              <Input
+                control="filepicker"
+                type="file"
+                id="image"
+                onChange={this.setProfilePhoto}
+              />
             </div>
           </div>
           <p className={classes.ProfileTitle}>
@@ -112,13 +153,13 @@ class Profile extends Component {
 
           <Input
             label="Set your status"
-            value={status.value}
+            value={profile.status}
             id="status"
             type="text"
             control="input"
-            onChange={this.statusChangeHandler}
+            onChange={(id, value) => onChangeStatus(value)}
           />
-          {statusButton}
+          {saveProfile}
 
           <h3>Your Posts</h3>
           {profilePosts ? (
@@ -145,14 +186,16 @@ const mapStateToProps = state => ({
   profile: state.user.user,
   profilePosts: state.user.posts,
   loadingProfile: state.user.loadingProfile,
-  loadingStatus: state.user.loadingStatus,
+  loadingSaveProfile: state.user.loadingSaveProfile,
   profileError: state.user.error,
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSetStatus: (status, token) => dispatch(action.setStatus(status, token)),
+  onSaveProfile: (photo, status, token) =>
+    dispatch(action.saveProfile(photo, status, token)),
   onFetchProfile: token => dispatch(action.fetchProfile(token)),
   onProfileReset: () => dispatch(action.profileReset()),
+  onChangeStatus: value => dispatch(action.statusChangeHandler(value)),
 });
 
 export default connect(

@@ -11,7 +11,7 @@ import Spinner from '../../components/Spinner/Spinner';
 import { serverUrl } from '../../config.json';
 import * as action from '../../store/actions/index';
 
-import { generateBase64FromImage } from '../../util/image';
+import generateBase64FromImage from '../../util/image';
 
 import classes from './PostImage.module.css';
 
@@ -76,7 +76,10 @@ class PostImage extends Component {
           },
         };
 
-        return { postImg: updateForm, imagePreview: serverUrl + editPost.imgUrl };
+        return {
+          postImg: updateForm,
+          imagePreview: serverUrl + editPost.imgUrl,
+        };
       });
     }
   }
@@ -132,67 +135,67 @@ class PostImage extends Component {
 
     return (
       <Modal close={toggleShow}>
-      <div className={classes.PostImage}>
-        <h2>Upload Image</h2>
-        <Form>
-          <Input
-            label={postImg.title.label}
-            value={postImg.title.value}
-            key={postImg.title.id}
-            id={postImg.title.id}
-            type={postImg.title.type}
-            control={postImg.title.control}
-            valid={postImg.title.valid}
-            errorMessage={postImg.title.error}
-            onChange={this.inputChangeHandler}
-          />
-          <Input
-            label={postImg.image.label}
-            value={postImg.image.value}
-            key={postImg.image.id}
-            id={postImg.image.id}
-            type={postImg.image.type}
-            control={postImg.image.control}
-            valid={postImg.image.valid}
-            errorMessage={postImg.image.error}
-            onChange={this.inputChangeHandler}
-          />
-          {!this.state.imagePreview && <p>Please choose an image.</p>}
-          {this.state.imagePreview && (
-            <Image
-              containerWidth="100px"
-              containerHeight="100px"
-              imgUrl={this.state.imagePreview}
+        <div className={classes.PostImage}>
+          <h2>Upload Image</h2>
+          <Form>
+            <Input
+              label={postImg.title.label}
+              value={postImg.title.value}
+              key={postImg.title.id}
+              id={postImg.title.id}
+              type={postImg.title.type}
+              control={postImg.title.control}
+              valid={postImg.title.valid}
+              errorMessage={postImg.title.error}
+              onChange={this.inputChangeHandler}
             />
-          )}
-          <Input
-            label={postImg.description.label}
-            value={postImg.description.value}
-            key={postImg.description.id}
-            id={postImg.description.id}
-            type={postImg.description.type}
-            control={postImg.description.control}
-            valid={postImg.description.valid}
-            errorMessage={postImg.description.error}
-            onChange={this.inputChangeHandler}
-          />
-          <div className={classes.ButtonContainer}>
-            <Button design="cancel" onClick={toggleShow}>
-              Cancel
-            </Button>
-            {this.props.loading ? (
-              <Spinner />
-            ) : (
-              <Button
-                design="submit"
-                onClick={this.addPostHandler}
-                type="submit"
-              >
-                Save
-              </Button>
+            <Input
+              label={postImg.image.label}
+              value={postImg.image.value}
+              key={postImg.image.id}
+              id={postImg.image.id}
+              type={postImg.image.type}
+              control={postImg.image.control}
+              valid={postImg.image.valid}
+              errorMessage={postImg.image.error}
+              onChange={this.inputChangeHandler}
+            />
+            {!this.state.imagePreview && <p>Please choose an image.</p>}
+            {this.state.imagePreview && (
+              <Image
+                containerWidth="100px"
+                containerHeight="100px"
+                imgUrl={this.state.imagePreview}
+              />
             )}
-          </div>
-        </Form>
+            <Input
+              label={postImg.description.label}
+              value={postImg.description.value}
+              key={postImg.description.id}
+              id={postImg.description.id}
+              type={postImg.description.type}
+              control={postImg.description.control}
+              valid={postImg.description.valid}
+              errorMessage={postImg.description.error}
+              onChange={this.inputChangeHandler}
+            />
+            <div className={classes.ButtonContainer}>
+              <Button design="cancel" onClick={toggleShow}>
+                Cancel
+              </Button>
+              {this.props.loading ? (
+                <Spinner />
+              ) : (
+                <Button
+                  design="submit"
+                  onClick={this.addPostHandler}
+                  type="submit"
+                >
+                  Save
+                </Button>
+              )}
+            </div>
+          </Form>
         </div>
       </Modal>
     );
@@ -217,5 +220,5 @@ const mapDispatchToProps = dispatch => {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(PostImage);

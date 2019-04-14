@@ -1,14 +1,22 @@
-const path = require('path');
-const fs = require('fs');
-
 const Post = require('../models/post');
 const User = require('../models/user');
 const { validationResult } = require('express-validator/check');
+const { deleteImg } = require('../util/deleteFile');
 
 exports.getPosts = (req, res, next) => {
   Post.find()
+    .sort({ createdAt: -1 })
+    .populate('creator')
     .then(posts => {
-      res.status(200).json(posts);
+      if (!posts) {
+        const error = new Error('Couldnt fetch posts!');
+        error.statusCode = 404;
+        throw error;
+      }
+      return posts;
+    })
+    .then(postData => {
+      res.status(200).json({ posts: postData });
     })
     .catch(err => {
       next(err);
@@ -51,15 +59,15 @@ exports.createPost = (req, res, next) => {
     error.data = errors.array();
     throw error;
   }
-
-  if (!req.file) {
+  
+  if (!req.files) {
     const error = new Error('Image not found!');
-    error.statusCoe = 422;
+    error.statusCode = 422;
     throw error;
   }
 
   const title = req.body.title;
-  const imgUrl = req.file.path;
+  const imgUrl = req.files.imgUrl[0].path;
   const description = req.body.description;
   let creator;
 
@@ -98,8 +106,11 @@ exports.editPost = (req, res, next) => {
   let imageUrl = req.body.imgUrl;
   const description = req.body.description;
 
-  if (req.file) {
-    imageUrl = req.file.path;
+
+  // TODO muss angepasst werden auf req.files.imgUrl[0]???
+  
+  if (req.files) {
+    imageUrl = req.files.imgUrl[0].path;
   }
 
   Post.findById(postId)
@@ -189,11 +200,7 @@ exports.toggleLikePost = (req, res, next) => {
         throw error;
       }
 
-      console.log(post.likedUser, currentUser._id);
-      
-
       const LikedUserIndex = post.likedUser.indexOf(currentUser._id);
-      console.log(LikedUserIndex)
       if (LikedUserIndex === -1) {
         post.likedUser.push(currentUser);
         post.likes += 1;
@@ -210,9 +217,4 @@ exports.toggleLikePost = (req, res, next) => {
     .catch(error => {
       next(error);
     });
-};
-
-const deleteImg = imagePath => {
-  filePath = path.join(__dirname, '..', imagePath);
-  fs.unlink(filePath, err => console.log(err));
 };

@@ -13,6 +13,7 @@ const input = props => {
     control,
     onChange,
     onBlur,
+    hidden,
   } = props;
 
   const inputClasses = [classes.InputField];

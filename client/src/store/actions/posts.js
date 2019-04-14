@@ -10,22 +10,22 @@ const fetchPostsStart = () => {
 const fetchPostsSuccess = posts => {
   return {
     type: actionTypes.FETCH_POSTS_SUCCESS,
-    posts: posts,
+    posts,
   };
 };
 
 const fetchPostsFail = error => {
   return {
     type: actionTypes.FETCH_POSTS_FAIL,
-    error: error,
+    error,
   };
 };
 
 export const postsReset = () => {
   return {
     type: actionTypes.POSTS_RESET,
-  }
-}
+  };
+};
 
 export const fetchPosts = () => {
   return dispatch => {
@@ -33,10 +33,11 @@ export const fetchPosts = () => {
     axiosUtil
       .get('post/posts')
       .then(response => {
-        const posts = response.data.map(post => ({
-          ...post,
-          imgUrl: post.imgUrl,
-        }));
+        const { posts } = response.data;
+        // const posts = response.data.map(post => ({
+        //   ...post,
+        //   imgUrl: post.imgUrl,
+        // }));
         dispatch(fetchPostsSuccess(posts));
       })
       .catch(error => {
